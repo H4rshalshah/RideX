@@ -97,9 +97,8 @@ const Landing = () => {
               </h1>
             </Reveal>
             <Reveal delay={160}>
-              <p className="mt-5 max-w-lg font-serif text-lg leading-relaxed text-ui-muted">
-                RideX connects you with verified captains nearby. Book an Economy, Comfort or
-                Premium ride with upfront fares and live tracking from pickup to drop-off.
+              <p className="mt-5 max-w-md font-serif text-lg leading-relaxed text-ui-muted">
+                Verified captains nearby. Upfront fares. Live tracking from pickup to drop-off.
               </p>
             </Reveal>
             <Reveal delay={240}>
