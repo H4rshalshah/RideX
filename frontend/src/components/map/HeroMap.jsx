@@ -15,11 +15,9 @@ const liveDotIcon = L.divIcon({
   iconAnchor: [9, 9],
 });
 
-// Dark theme uses the only-labels style — a clean black base with city names
-// and no street grid, matching the dark UI.
 const tileUrl = (dark) =>
   dark
-    ? 'https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png'
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
     : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 
 const TILE_ATTR =

@@ -150,18 +150,17 @@
 }
 
 /* Soften map tiles so they blend with the UI — the street grid fades into
-   the background and the map reads as a subtle texture. The dark map is
-   pushed to near-black so it matches the theme instead of reading grey. */
+   the background and the map reads as a subtle texture. The filter is applied
+   on the whole tile pane (not each tile) so no grid seams show between tiles. */
 .map-tiles-dark {
   background-color: #0b0b0d;
 }
-.map-tiles-dark .leaflet-tile {
-  /* dark_only_labels tiles: pure black base with city labels only — no
-     street grid at all. Brightness slightly dims the white labels onto the
-     ui-ink tone so they read like the rest of the dark UI. */
-  filter: saturate(0.5) brightness(0.9) contrast(1.05);
+.map-tiles-dark .leaflet-tile-pane {
+  /* Readable and theme-matched: background sits on the ui-line tone, roads
+     stay subtle and labels land on the ui-muted tone */
+  filter: saturate(0.5) brightness(0.78) contrast(1.05);
 }
-.map-tiles-light .leaflet-tile {
+.map-tiles-light .leaflet-tile-pane {
   /* Light map blends into the off-white canvas with readable labels */
   filter: saturate(0.4) brightness(1.02) contrast(0.98);
 }
