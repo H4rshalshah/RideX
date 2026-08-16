@@ -17,6 +17,13 @@ router.get('/reverse-geocode',
     mapController.getAddressFromCoordinates
 );
 
+router.get('/get-route',
+    query('origin').isString().isLength({ min: 5 }),
+    query('destination').isString().isLength({ min: 5 }),
+    authMiddleware.authUser,
+    mapController.getRoute
+)
+
 router.get('/get-distance-time',
     query('origin').isString().isLength({ min: 3 }),
     query('destination').isString().isLength({ min: 3 }),

@@ -8,7 +8,9 @@ setup instructions and the full project overview.
 - JSON request/response bodies.
 - All protected endpoints require a valid JWT: `Authorization: Bearer <token>`.
 - Ride request validation errors return `400` with an `errors` array.
-- Google Maps calls are proxied server-side; the API key never leaves the backend.
+- Maps calls are proxied server-side. Google Maps is used when a key is configured; otherwise
+  the API falls back to free, keyless providers (Nominatim geocoding, OSRM routing, Photon
+  autocomplete) so the app works without any API key.
 
 ## Environment
 
@@ -16,7 +18,7 @@ setup instructions and the full project overview.
 | --------------- | -------------------------------------------------- |
 | `DB_CONNECT`    | MongoDB connection string                          |
 | `JWT_SECRET`    | Secret used to sign auth tokens                    |
-| `GOOGLE_MAPS_API` | Server-side Google Maps API key                  |
+| `GOOGLE_MAPS_API` | Server-side Google Maps API key *(optional — keyless fallbacks used when unset)* |
 | `PORT`          | Server port (default `3000`)                       |
 | `CORS_ORIGIN`   | Comma-separated allowed origins (default: any)     |
 
@@ -38,14 +40,18 @@ setup instructions and the full project overview.
 | GET    | `/captains/profile`     | JWT  | Current captain profile              |
 | GET    | `/captains/logout`      | JWT  | Blacklists the token and logs out    |
 
-## Maps (proxied to Google)
+## Maps
 
 | Method | Endpoint                 | Params                      | Description                    |
 | ------ | ------------------------ | --------------------------- | ------------------------------ |
 | GET    | `/maps/get-coordinates`  | `address`                   | Geocode an address → `{ltd, lng}` |
 | GET    | `/maps/get-distance-time`| `origin`, `destination`     | Distance + duration between two addresses |
+| GET    | `/maps/get-route`        | `origin`, `destination` (`"ltd,lng"`) | Driving route → `{ distance, duration, geometry }` |
 | GET    | `/maps/get-suggestions`  | `input`                     | Autocomplete place suggestions |
 | GET    | `/maps/reverse-geocode`  | `ltd`, `lng`                | Address for a coordinate pair  |
+
+> All map endpoints work without a Google key: geocoding falls back to Nominatim, routing to
+> OSRM and autocomplete to Photon. `GOOGLE_MAPS_API` simply upgrades these to Google when set.
 
 ## Rides
 

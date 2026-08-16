@@ -2,7 +2,7 @@
  * Decorative line-art node/network illustration used behind hero and
  * auth sections. Renders in the current text color at low opacity.
  */
-const NetworkArt = ({ className = '' }) => (
+const NetworkArt = ({ className = '', children }) => (
   <svg
     aria-hidden="true"
     className={`pointer-events-none absolute inset-0 h-full w-full text-ui-ink/10 ${className}`}
@@ -25,6 +25,7 @@ const NetworkArt = ({ className = '' }) => (
       stroke="currentColor"
       strokeWidth="1"
     />
+    {children}
   </svg>
 );
 

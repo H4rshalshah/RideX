@@ -52,15 +52,15 @@ captain, show the earnings/trips from the seeded data.
 
 - **Real-time, not mocked**: Socket.io pushes ride requests to online captains within a
   radius of the pickup — no polling.
-- **Security**: JWT auth with token blacklisting on logout; Google Maps keys stay on the
-  server; OTP-verified ride starts.
+- **Security**: JWT auth with token blacklisting on logout; API keys stay on the server;
+  OTP-verified ride starts.
 - **UX system**: one design system (colors, type, buttons, cards), skeleton loaders, toasts,
   form validation, and `prefers-reduced-motion` support.
 - **Clean code**: shared API client, reusable UI primitives, no unused dependencies.
 
 ## If something is missing
 
-- Map shows "Map unavailable" → `VITE_GOOGLE_MAPS_API_KEY` is not set in `frontend/.env`.
-- Fares/geocoding fail → `GOOGLE_MAPS_API` is not set in `Backend/.env`.
+- Map shows a placeholder → no internet connection (the map needs to fetch OSM tiles).
+- Fares/geocoding fail → no internet connection (the backend uses free keyless providers).
 - Captain never receives the request → the captain is not online, or the pickup is farther
   than 2 km from the captain's seeded location near Mumbai.

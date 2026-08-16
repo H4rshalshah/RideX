@@ -4,8 +4,9 @@
  *
  * Usage: npm run dev   (from the Backend folder)
  *
- * Note: Google Maps features (map tiles, geocoding, fares) still require a
- * real GOOGLE_MAPS_API key in Backend/.env.
+ * Note: maps, geocoding, routes and fares work without any API key (free
+ * OpenStreetMap / Nominatim / OSRM / Photon providers). Setting a real
+ * GOOGLE_MAPS_API key in Backend/.env upgrades those calls to Google Maps.
  */
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const http = require('http');

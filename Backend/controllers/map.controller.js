@@ -35,6 +35,31 @@ module.exports.getAddressFromCoordinates = async (req, res, next) => {
     }
 }
 
+module.exports.getRoute = async (req, res, next) => {
+
+    try {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { origin, destination } = req.query;
+
+        // origin/destination arrive as "ltd,lng" strings
+        const [ oltd, olng ] = origin.split(',').map(Number);
+        const [ dltd, dlng ] = destination.split(',').map(Number);
+
+        const route = await mapService.getRoute({ ltd: oltd, lng: olng }, { ltd: dltd, lng: dlng });
+
+        res.status(200).json(route);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Unable to fetch route' });
+    }
+}
+
 module.exports.getDistanceTime = async (req, res, next) => {
 
     try {

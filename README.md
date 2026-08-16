@@ -17,8 +17,8 @@ complete trips with OTP-verified starts.
 - **Dual portals** — separate rider and captain accounts, dashboards and ride flows.
 - **Ride lifecycle** — `pending → accepted → ongoing → completed`, with a 6-digit OTP the rider
   shares with the captain to start the ride.
-- **Live location tracking** — Google Maps with live geolocation, pickup/destination pins and a
-  drawn route.
+- **Live location tracking** — a real map (Leaflet + OpenStreetMap) with live geolocation,
+  pickup/destination pins, a drawn driving route and theme-aware tiles — no API key required.
 - **Upfront fare estimates** — fare + distance + duration for every ride option before booking.
 - **Online/offline captain toggle** — captains only receive requests while online and streaming
   their location.
@@ -38,7 +38,7 @@ complete trips with OTP-verified starts.
 | Layer     | Technology                                                                  |
 | --------- | --------------------------------------------------------------------------- |
 | Frontend  | React 18, Vite 5, Tailwind CSS 3, React Router 6, Axios, Socket.io-client   |
-| Maps      | Google Maps JS API via `@react-google-maps/api` (client) + backend proxy    |
+| Maps      | Leaflet + OpenStreetMap/CARTO tiles (client); Nominatim, OSRM & Photon (backend, keyless). Google Maps used automatically when a key is configured |
 | Backend   | Node.js, Express 4, Socket.io, JWT auth (blacklist on logout), bcrypt       |
 | Database  | MongoDB with Mongoose 8                                                     |
 
@@ -88,7 +88,7 @@ Copy the example files and fill in your own values — never commit real credent
 ```env
 DB_CONNECT=mongodb://127.0.0.1:27017/ridex
 JWT_SECRET=your_jwt_secret
-GOOGLE_MAPS_API=your_google_maps_api_key
+# GOOGLE_MAPS_API=your_google_maps_api_key   # optional
 PORT=3000
 CORS_ORIGIN=http://localhost:5173
 ```
@@ -97,12 +97,13 @@ CORS_ORIGIN=http://localhost:5173
 
 ```env
 VITE_BASE_URL=http://localhost:3000
-VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+# VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key   # optional
 ```
 
-> The backend proxies all Google Maps API calls (geocoding, distance matrix, autocomplete,
-> reverse geocoding) so the server-side key is never exposed. The frontend key is only used by the
-> Maps JS library; restrict it to your app's domains.
+> **No API keys are required.** The map renders with free OpenStreetMap/CARTO tiles, and the
+> backend falls back to keyless providers (Nominatim geocoding, OSRM routing, Photon
+> autocomplete) for fares, routes and address search. If you add a `GOOGLE_MAPS_API` key to
+> `Backend/.env`, the backend uses Google Maps for those calls automatically instead.
 
 ## Running Locally
 
@@ -170,8 +171,8 @@ real-time request → accept → OTP → complete flow.
 | ------------- | -------------- |
 | ![Captain login](screenshots/captain-login.png) | ![Captain signup](screenshots/captain-signup.png) |
 
-> The booking map, ride history and captain dashboard screens require a running MongoDB
-> instance and Google Maps keys — they are not included above.
+> The booking map, ride history and captain dashboard screens need a running MongoDB
+> instance — they are not included above.
 _
 
 ## Future Improvements

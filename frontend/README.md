@@ -6,7 +6,7 @@ React 18 + Vite + Tailwind CSS single-page app for the RideX ride-booking platfo
 
 ```bash
 npm install
-cp .env.example .env   # then fill in VITE_BASE_URL and VITE_GOOGLE_MAPS_API_KEY
+cp .env.example .env   # fill in VITE_BASE_URL (the Google Maps key is optional — the map works without it)
 npm run dev            # http://localhost:5173
 ```
 

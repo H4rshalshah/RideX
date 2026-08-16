@@ -1,35 +1,71 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { LoadScript, GoogleMap, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { useEffect, useRef, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import api from '../lib/api';
 import Spinner from './ui/Spinner';
+import { useTheme } from '../context/ThemeContext';
 
-const containerStyle = { width: '100%', height: '100%' };
+const DEFAULT_CENTER = [28.6139, 77.209]; // New Delhi
 
-const DEFAULT_CENTER = { lat: 28.6139, lng: 77.209 }; // New Delhi
-const MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+// Custom SVG pins (no default Leaflet icon assets needed)
+const pinIcon = (color, label) =>
+  L.divIcon({
+    className: '',
+    html: `<svg width="30" height="38" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z" fill="${color}" stroke="#ffffff" stroke-width="2"/>
+      <text x="12" y="12.2" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#ffffff">${label}</text>
+    </svg>`,
+    iconSize: [30, 38],
+    iconAnchor: [15, 36],
+  });
 
-const pinIcon = (color) => ({
-  path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z',
-  fillColor: color,
-  fillOpacity: 1,
-  strokeColor: '#ffffff',
-  strokeWeight: 2,
-  scale: 1.6,
-  anchor: { x: 12, y: 24 },
+const liveDotIcon = L.divIcon({
+  className: '',
+  html: '<span class="ridex-live-dot"></span>',
+  iconSize: [18, 18],
+  iconAnchor: [9, 9],
 });
+
+// Refits the viewport to the route (or pickup/destination, or the user).
+const FitBounds = ({ pickupCoords, destCoords, route, currentPosition }) => {
+  const map = useMap();
+  const centeredRef = useRef(false);
+
+  useEffect(() => {
+    const pts = [];
+    if (pickupCoords) pts.push(pickupCoords);
+    if (destCoords) pts.push(destCoords);
+    if (route) pts.push(...route);
+
+    if (pts.length >= 2) {
+      map.fitBounds(L.latLngBounds(pts), { padding: [45, 45], maxZoom: 16 });
+    } else if (pts.length === 1) {
+      map.setView(pts[0], 15);
+    } else if (currentPosition && !centeredRef.current) {
+      centeredRef.current = true;
+      map.setView(currentPosition, 15);
+    }
+  }, [map, pickupCoords, destCoords, route, currentPosition]);
+
+  return null;
+};
 
 /**
  * Live location map with an optional route between pickup and destination.
- * Coordinates for the route are fetched through the backend proxy so no map
- * API key is used outside of the browser Maps JS loader.
+ * Uses Leaflet + free OpenStreetMap tiles (no API key required). Addresses are
+ * geocoded and routes are fetched through the backend, which falls back to
+ * keyless providers (Nominatim/OSRM) when no Google key is configured.
  */
 const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
-  const [currentPosition, setCurrentPosition] = useState(DEFAULT_CENTER);
+  const { theme } = useTheme();
+  const dark = theme === 'dark';
+  const [currentPosition, setCurrentPosition] = useState(null);
   const [locationDenied, setLocationDenied] = useState(false);
   const [pickupCoords, setPickupCoords] = useState(null);
   const [destCoords, setDestCoords] = useState(null);
-  const [directions, setDirections] = useState(null);
-  const mapRef = useRef(null);
+  const [route, setRoute] = useState(null);
+  const [routeLoading, setRouteLoading] = useState(false);
 
   // Live geolocation (single watcher, cleaned up on unmount)
   useEffect(() => {
@@ -48,14 +84,16 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
-  // Resolve pickup/destination coordinates through the backend proxy
+  // Resolve pickup/destination coordinates + driving route through the backend
   useEffect(() => {
     let cancelled = false;
     async function loadRoute() {
-      setDirections(null);
+      setRoute(null);
+      setRouteLoading(true);
       if (!pickup || !destination) {
         setPickupCoords(null);
         setDestCoords(null);
+        setRouteLoading(false);
         return;
       }
       try {
@@ -64,13 +102,31 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
           api.get('/maps/get-coordinates', { params: { address: destination } }),
         ]);
         if (cancelled) return;
-        setPickupCoords({ lat: p.data.ltd, lng: p.data.lng });
-        setDestCoords({ lat: d.data.ltd, lng: d.data.lng });
+        const pc = { lat: p.data.ltd, lng: p.data.lng };
+        const dc = { lat: d.data.ltd, lng: d.data.lng };
+        setPickupCoords(pc);
+        setDestCoords(dc);
+
+        try {
+          const r = await api.get('/maps/get-route', {
+            params: {
+              origin: `${p.data.ltd},${p.data.lng}`,
+              destination: `${d.data.ltd},${d.data.lng}`,
+            },
+          });
+          if (!cancelled && r.data?.geometry?.length) {
+            setRoute(r.data.geometry.map(([lat, lng]) => ({ lat, lng })));
+          }
+        } catch {
+          // No route — the straight dashed line between the markers is shown instead
+        }
       } catch {
         if (!cancelled) {
           setPickupCoords(null);
           setDestCoords(null);
         }
+      } finally {
+        if (!cancelled) setRouteLoading(false);
       }
     }
     loadRoute();
@@ -79,91 +135,65 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
     };
   }, [pickup, destination]);
 
-  const onDirectionsLoad = useCallback(
-    (result) => {
-      setDirections(result);
-      const map = mapRef.current;
-      if (map && window.google?.maps && result?.routes?.length) {
-        const bounds = new window.google.maps.LatLngBounds();
-        result.routes[0].overview_path.forEach((p) => bounds.extend(p));
-        map.fitBounds(bounds, 60);
-      }
-    },
-    []
-  );
-
-  const onDirectionsError = useCallback(() => setDirections(null), []);
-
-  const onMapLoad = useCallback((map) => {
-    mapRef.current = map;
-  }, []);
-
-  const onMapUnmount = useCallback(() => {
-    mapRef.current = null;
-  }, []);
-
-  if (!MAPS_KEY) {
-    return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-ui-card2 text-center">
-        <i className="ri-map-2-line text-4xl text-ui-faint" />
-        <p className="max-w-xs text-sm text-ui-muted">
-          Map unavailable — add <code className="rounded border border-ui-line bg-ui-card px-1.5 py-0.5 text-xs">VITE_GOOGLE_MAPS_API_KEY</code> to
-          your environment to enable live maps.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <LoadScript
-      googleMapsApiKey={MAPS_KEY}
-      loadingElement={
-        <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-ui-card2">
-          <Spinner className="h-7 w-7 text-ui-ink" />
-          <p className="text-sm font-medium text-ui-muted">Loading map…</p>
-        </div>
-      }
-    >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={currentPosition}
-        zoom={15}
-        onLoad={onMapLoad}
-        onUnmount={onMapUnmount}
-        options={{
-          disableDefaultUI: true,
-          clickableIcons: false,
-          styles: [
-            { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
-          ],
-        }}
+    <div className="relative h-full w-full">
+      <MapContainer
+        center={currentPosition || DEFAULT_CENTER}
+        zoom={13}
+        className="h-full w-full"
+        style={{ height: '100%', width: '100%' }}
+        scrollWheelZoom
       >
-        {pickupCoords && <Marker position={pickupCoords} icon={pinIcon('#10b981')} title="Pickup" />}
-        {destCoords && <Marker position={destCoords} icon={pinIcon('#f59e0b')} title="Destination" />}
-        <Marker position={currentPosition} title="You are here" />
-        {pickupCoords && destCoords && !directions && (
-          <DirectionsService
-            options={{
-              origin: pickupCoords,
-              destination: destCoords,
-              travelMode: 'DRIVING',
-            }}
-            callback={(result, status) => {
-              if (status === 'OK' && result) onDirectionsLoad(result);
-              else onDirectionsError();
-            }}
+        <TileLayer
+          url={
+            dark
+              ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+              : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+          }
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        />
+
+        <FitBounds
+          pickupCoords={pickupCoords}
+          destCoords={destCoords}
+          route={route}
+          currentPosition={currentPosition}
+        />
+
+        {route && (
+          <Polyline
+            positions={route}
+            pathOptions={{ color: '#3b82f6', weight: 5, opacity: 0.85 }}
           />
         )}
-        {directions && <DirectionsRenderer options={{ directions, suppressMarkers: true, polylineOptions: { strokeColor: '#6d28f0', strokeWeight: 5, strokeOpacity: 0.85 } }} />}
-      </GoogleMap>
+        {!route && pickupCoords && destCoords && (
+          <Polyline
+            positions={[pickupCoords, destCoords]}
+            pathOptions={{ color: '#3b82f6', weight: 3, opacity: 0.6, dashArray: '8 10' }}
+          />
+        )}
+
+        {pickupCoords && <Marker position={pickupCoords} icon={pinIcon('#10b981', 'P')} title="Pickup" />}
+        {destCoords && <Marker position={destCoords} icon={pinIcon('#f59e0b', 'D')} title="Destination" />}
+        {currentPosition && <Marker position={currentPosition} icon={liveDotIcon} title="You are here" />}
+      </MapContainer>
+
+      {routeLoading && (
+        <div className="pointer-events-none absolute left-1/2 top-3 z-[1000] -translate-x-1/2">
+          <div className="flex items-center gap-2 rounded-full border border-ui-line bg-ui-card px-3 py-1.5 shadow-card">
+            <Spinner className="h-3.5 w-3.5 text-ui-ink" />
+            <span className="text-xs font-medium text-ui-muted">Finding route…</span>
+          </div>
+        </div>
+      )}
 
       {locationDenied && showLocationNotice && (
-        <div className="absolute left-1/2 top-4 z-10 w-max max-w-[90%] -translate-x-1/2 rounded-xl bg-ui-accent px-4 py-2 text-xs font-medium text-ui-onaccent shadow-lift">
+        <div className="absolute left-1/2 top-4 z-[1000] w-max max-w-[90%] -translate-x-1/2 rounded-xl bg-ui-accent px-4 py-2 text-xs font-medium text-ui-onaccent shadow-lift">
           <i className="ri-navigation-line mr-1.5" />
           Enable location access for live tracking
         </div>
       )}
-    </LoadScript>
+    </div>
   );
 };
 
