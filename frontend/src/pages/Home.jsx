@@ -1,0 +1,379 @@
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import LiveTracking from '../components/LiveTracking';
+import LocationSearchPanel from '../components/LocationSearchPanel';
+import VehiclePanel from '../components/VehiclePanel';
+import ConfirmRide from '../components/ConfirmRide';
+import LookingForDriver from '../components/LookingForDriver';
+import WaitingForDriver from '../components/WaitingForDriver';
+import Logo from '../components/brand/Logo';
+import Skeleton from '../components/ui/Skeleton';
+import Button from '../components/ui/Button';
+import { useToast } from '../components/ui/Toast';
+import { SocketContext } from '../context/SocketContext';
+import { UserDataContext } from '../context/UserContext';
+import api, { getErrorMessage } from '../lib/api';
+
+const Steps = {
+  FORM: 'form',
+  VEHICLES: 'vehicles',
+  CONFIRM: 'confirm',
+  LOOKING: 'looking',
+  WAITING: 'waiting',
+};
+
+const Home = () => {
+  const [pickup, setPickup] = useState('');
+  const [destination, setDestination] = useState('');
+  const [activeField, setActiveField] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+  const [fare, setFare] = useState({});
+  const [distanceText, setDistanceText] = useState('');
+  const [durationText, setDurationText] = useState('');
+  const [etaMinutes, setEtaMinutes] = useState(null);
+  const [vehicleType, setVehicleType] = useState(null);
+  const [ride, setRide] = useState(null);
+  const [step, setStep] = useState(Steps.FORM);
+  const [fareLoading, setFareLoading] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [locating, setLocating] = useState(false);
+
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { socket } = useContext(SocketContext);
+  const { user } = useContext(UserDataContext);
+  const suggestionTimer = useRef(null);
+
+  // Register this socket as a rider and listen for ride events
+  useEffect(() => {
+    if (!socket) return undefined;
+    if (user?._id) socket.emit('join', { userType: 'user', userId: user._id });
+  }, [socket, user?._id]);
+
+  useEffect(() => {
+    if (!socket) return undefined;
+    const onRideConfirmed = (rideData) => {
+      setRide(rideData);
+      setStep(Steps.WAITING);
+    };
+    const onRideStarted = (rideData) => {
+      navigate('/riding', { state: { ride: rideData } });
+    };
+    socket.on('ride-confirmed', onRideConfirmed);
+    socket.on('ride-started', onRideStarted);
+    return () => {
+      socket.off('ride-confirmed', onRideConfirmed);
+      socket.off('ride-started', onRideStarted);
+    };
+  }, [socket, navigate]);
+
+  useEffect(() => () => clearTimeout(suggestionTimer.current), []);
+
+  const handleLocationChange = useCallback(
+    (field, value) => {
+      if (field === 'pickup') setPickup(value);
+      else setDestination(value);
+
+      clearTimeout(suggestionTimer.current);
+      if (value.trim().length < 3) {
+        setSuggestions([]);
+        setSuggestionsLoading(false);
+        return;
+      }
+      setSuggestionsLoading(true);
+      suggestionTimer.current = setTimeout(async () => {
+        try {
+          const res = await api.get('/maps/get-suggestions', { params: { input: value.trim() } });
+          setSuggestions(res.data);
+        } catch {
+          setSuggestions([]);
+        } finally {
+          setSuggestionsLoading(false);
+        }
+      }, 350);
+    },
+    []
+  );
+
+  const handleSuggestionSelect = (suggestion) => {
+    if (activeField === 'pickup') setPickup(suggestion);
+    else setDestination(suggestion);
+    setSuggestions([]);
+    setActiveField(null);
+  };
+
+  const useCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      toast('Location is not supported by this browser.', 'error');
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const res = await api.get('/maps/reverse-geocode', {
+            params: { ltd: position.coords.latitude, lng: position.coords.longitude },
+          });
+          setPickup(res.data.address);
+        } catch {
+          toast('Could not resolve your current location.', 'error');
+        } finally {
+          setLocating(false);
+        }
+      },
+      () => {
+        toast('Location permission was denied.', 'error');
+        setLocating(false);
+      }
+    );
+  };
+
+  const findRides = async () => {
+    if (!pickup.trim() || !destination.trim()) {
+      toast('Enter both a pickup location and a destination.', 'error');
+      return;
+    }
+    setFareLoading(true);
+    setStep(Steps.VEHICLES);
+    try {
+      const [fareRes, routeRes] = await Promise.all([
+        api.get('/rides/get-fare', { params: { pickup, destination } }),
+        api.get('/maps/get-distance-time', { params: { origin: pickup, destination } }),
+      ]);
+      setFare(fareRes.data);
+      setDistanceText(routeRes.data.distance?.text || '');
+      setDurationText(routeRes.data.duration?.text || '');
+      const seconds = routeRes.data.duration?.value;
+      setEtaMinutes(seconds ? Math.max(1, Math.round(seconds / 60)) : null);
+    } catch (err) {
+      setStep(Steps.FORM);
+      toast(getErrorMessage(err, 'Could not calculate fares for this route.'), 'error');
+    } finally {
+      setFareLoading(false);
+    }
+  };
+
+  const confirmRide = async () => {
+    setConfirming(true);
+    try {
+      const res = await api.post('/rides/create', { pickup, destination, vehicleType });
+      setRide(res.data);
+      setStep(Steps.LOOKING);
+    } catch (err) {
+      toast(getErrorMessage(err, 'Could not book this ride right now.'), 'error');
+    } finally {
+      setConfirming(false);
+    }
+  };
+
+  const cancelRequest = async () => {
+    if (ride?._id) {
+      try {
+        await api.post('/rides/cancel', { rideId: ride._id });
+      } catch {
+        // the ride may already be gone — proceed regardless
+      }
+    }
+    setRide(null);
+    setStep(Steps.FORM);
+  };
+
+  const resetTrip = () => {
+    setPickup('');
+    setDestination('');
+    setFare({});
+    setRide(null);
+    setVehicleType(null);
+    setStep(Steps.FORM);
+  };
+
+  const initials = (user?.fullname?.firstname?.[0] || 'R').toUpperCase();
+
+  const renderPanel = () => {
+    if (step === Steps.VEHICLES && fareLoading) {
+      return (
+        <div aria-live="polite">
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="mt-2 h-4 w-64" />
+          <div className="mt-5 space-y-3">
+            {[0, 1, 2].map((i) => (
+              <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+            ))}
+          </div>
+          <p className="mt-4 text-center text-sm font-medium text-ink-400">
+            <i className="ri-loader-4-line mr-1.5 animate-spin" />
+            Calculating fares…
+          </p>
+        </div>
+      );
+    }
+
+    if (step === Steps.VEHICLES) {
+      return (
+        <VehiclePanel
+          fare={fare}
+          etaMinutes={etaMinutes}
+          onSelect={(type) => {
+            setVehicleType(type);
+            setStep(Steps.CONFIRM);
+          }}
+          onClose={() => setStep(Steps.FORM)}
+        />
+      );
+    }
+
+    if (step === Steps.CONFIRM) {
+      return (
+        <ConfirmRide
+          rideType={vehicleType}
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          distanceText={distanceText}
+          durationText={durationText}
+          loading={confirming}
+          onConfirm={confirmRide}
+          onClose={() => setStep(Steps.VEHICLES)}
+        />
+      );
+    }
+
+    if (step === Steps.LOOKING) {
+      return (
+        <LookingForDriver
+          rideType={vehicleType}
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          onCancel={cancelRequest}
+        />
+      );
+    }
+
+    if (step === Steps.WAITING) {
+      return <WaitingForDriver ride={ride} />;
+    }
+
+    // FORM
+    return (
+      <div>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-extrabold text-ink-900">Where to?</h2>
+          {(pickup || destination) && (
+            <button
+              onClick={resetTrip}
+              className="text-xs font-semibold text-ink-400 transition hover:text-ink-700"
+            >
+              Clear trip
+            </button>
+          )}
+        </div>
+
+        <form
+          className="mt-4 space-y-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            findRides();
+          }}
+        >
+          <div className="relative">
+            <span className="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-ink-400">
+              <i className="ri-map-pin-user-line" />
+            </span>
+            <input
+              value={pickup}
+              onChange={(e) => handleLocationChange('pickup', e.target.value)}
+              onFocus={() => setActiveField('pickup')}
+              placeholder="Pickup location"
+              aria-label="Pickup location"
+              className="w-full rounded-2xl border border-ink-200 bg-ink-50 py-3 pl-10 pr-3 text-sm font-medium text-ink-900 placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
+            />
+            <button
+              type="button"
+              onClick={useCurrentLocation}
+              disabled={locating}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-brand-50 px-2.5 py-1.5 text-xs font-bold text-brand-700 transition hover:bg-brand-100 disabled:opacity-60"
+            >
+              {locating ? <i className="ri-loader-4-line animate-spin" /> : <i className="ri-crosshair-2-line mr-1" />}
+              {locating ? 'Locating…' : 'Current location'}
+            </button>
+          </div>
+
+          <div className="relative">
+            <span className="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-ink-400">
+              <i className="ri-map-pin-2-line" />
+            </span>
+            <input
+              value={destination}
+              onChange={(e) => handleLocationChange('destination', e.target.value)}
+              onFocus={() => setActiveField('destination')}
+              placeholder="Enter your destination"
+              aria-label="Destination"
+              className="w-full rounded-2xl border border-ink-200 bg-ink-50 py-3 pl-10 pr-3 text-sm font-medium text-ink-900 placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
+            />
+          </div>
+
+          {activeField && (
+            <div className="rounded-2xl border border-ink-100 bg-white p-2 shadow-card">
+              <LocationSearchPanel
+                suggestions={suggestions}
+                loading={suggestionsLoading}
+                onSelect={handleSuggestionSelect}
+                emptyText={
+                  suggestionsLoading
+                    ? ''
+                    : 'Keep typing — suggestions appear after 3 characters.'
+                }
+              />
+            </div>
+          )}
+
+          <Button type="submit" size="lg" className="w-full" disabled={fareLoading}>
+            <i className="ri-taxi-line" /> Find rides
+          </Button>
+        </form>
+      </div>
+    );
+  };
+
+  return (
+    <div className="relative h-screen overflow-hidden bg-ink-950">
+      <div className="absolute inset-0">
+        <LiveTracking pickup={pickup} destination={destination} />
+      </div>
+
+      {/* Top bar */}
+      <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
+        <span className="rounded-2xl bg-white/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
+          <Logo size={26} />
+        </span>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/history"
+            aria-label="Ride history"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-700 shadow-card backdrop-blur-sm transition hover:bg-white"
+          >
+            <i className="ri-history-line text-lg" />
+          </Link>
+          <Link
+            to="/profile"
+            aria-label="Profile"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-sm font-extrabold text-white shadow-card transition hover:bg-brand-700"
+          >
+            {initials}
+          </Link>
+        </div>
+      </header>
+
+      {/* Booking panel */}
+      <div className="absolute inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[420px]">
+        <div className="max-h-[72vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-lift lg:max-h-[85vh] lg:rounded-3xl">
+          {renderPanel()}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
