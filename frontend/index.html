@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/ridex.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#6d28f0" />
+    <meta name="theme-color" content="#0A0A0A" />
     <meta
       name="description"
       content="RideX — book a ride in minutes. Quick booking, live tracking, transparent fares and verified drivers."
@@ -16,6 +16,19 @@
       rel="stylesheet"
     />
     <title>RideX — Book a ride in minutes</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      // A ?theme=light|dark query param overrides it (handy for previews).
+      (function () {
+        try {
+          var t = localStorage.getItem('ridex-theme');
+          var qp = new URLSearchParams(window.location.search).get('theme');
+          if (qp === 'light' || qp === 'dark') t = qp;
+          if (t !== 'light' && t !== 'dark') t = 'dark';
+          document.documentElement.classList.toggle('dark', t === 'dark');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

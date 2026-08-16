@@ -2,22 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ─────────────────────────────────────────────
+   Light (default) / Dark (.dark on <html>). Monochrome palette
+   inspired by a Base-style design system: matte black, charcoal,
+   pure white, thin borders and high-contrast typography. */
+
+:root {
+  --color-canvas: 250 250 250;   /* #FAFAFA */
+  --color-card: 255 255 255;     /* #FFFFFF */
+  --color-card2: 245 245 245;    /* #F5F5F5 */
+  --color-line: 229 229 229;     /* #E5E5E5 */
+  --color-ink: 0 0 0;            /* #000000 */
+  --color-muted: 82 82 82;       /* #525252 */
+  --color-faint: 140 140 140;    /* #8C8C8C */
+  --color-accent: 0 0 0;         /* #000000 */
+  --color-onaccent: 255 255 255; /* #FFFFFF */
+}
+
+.dark {
+  --color-canvas: 10 10 10;      /* #0A0A0A */
+  --color-card: 31 31 31;        /* #1F1F1F */
+  --color-card2: 38 38 38;       /* #262626 */
+  --color-line: 38 38 38;        /* #262626 */
+  --color-ink: 255 255 255;      /* #FFFFFF */
+  --color-muted: 168 168 168;    /* #A8A8A8 */
+  --color-faint: 110 110 110;    /* #6E6E6E */
+  --color-accent: 255 255 255;   /* #FFFFFF */
+  --color-onaccent: 10 10 10;    /* #0A0A0A */
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
   }
 
   body {
-    @apply bg-white text-ink-900 antialiased;
+    @apply bg-ui-canvas text-ui-ink antialiased;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   ::selection {
-    @apply bg-brand-600 text-white;
+    background-color: rgb(var(--color-ink));
+    color: rgb(var(--color-canvas));
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-brand-600;
+    outline: 2px solid rgb(var(--color-ink));
+    outline-offset: 2px;
   }
 
   /* Subtle custom scrollbar */
@@ -26,21 +62,11 @@
     height: 8px;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-ink-300 rounded-full;
+    background-color: rgb(var(--color-line));
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-ink-400;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
+    background-color: rgb(var(--color-faint));
   }
 }
 
@@ -59,13 +85,16 @@
     opacity: 1;
     transform: none;
   }
+}
 
-  /* Brand gradient used sparingly for hero accents */
-  .text-gradient {
-    background: linear-gradient(100deg, #6d28f0, #9d74ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
