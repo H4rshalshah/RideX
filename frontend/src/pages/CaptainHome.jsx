@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CaptainDetails from '../components/CaptainDetails';
 import RidePopUp from '../components/RidePopUp';
+import ReachedPickup from '../components/ReachedPickup';
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp';
 import LiveTracking from '../components/LiveTracking';
 import Logo from '../components/brand/Logo';
@@ -16,6 +17,7 @@ import api, { getErrorMessage } from '../lib/api';
 const CaptainHome = () => {
   const [ride, setRide] = useState(null);
   const [showRideRequest, setShowRideRequest] = useState(false);
+  const [showReached, setShowReached] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [accepting, setAccepting] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
@@ -106,7 +108,7 @@ const CaptainHome = () => {
     try {
       await api.post('/rides/confirm', { rideId: ride._id });
       setShowRideRequest(false);
-      setShowConfirm(true);
+      setShowReached(true);
     } catch (err) {
       toast(getErrorMessage(err, 'Could not accept this ride.'), 'error');
     } finally {
@@ -193,6 +195,23 @@ const CaptainHome = () => {
           )}
         </div>
       </div>
+
+      {/* Reached pickup overlay — confirm arrival, then the OTP step */}
+      {showReached && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm lg:items-center">
+          <div className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-3xl border border-ui-line bg-ui-card p-5 shadow-lift lg:rounded-3xl">
+            {ride && (
+              <ReachedPickup
+                ride={ride}
+                onReached={() => {
+                  setShowReached(false);
+                  setShowConfirm(true);
+                }}
+              />
+            )}
+          </div>
+        </div>
+      )}
 
       {/* OTP confirmation overlay */}
       {showConfirm && (

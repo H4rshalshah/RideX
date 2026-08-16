@@ -1,0 +1,66 @@
+import Button from './ui/Button';
+
+const ReachedPickup = ({ ride, onReached }) => {
+  const user = ride?.user;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-extrabold text-ui-ink">Head to the pickup location</h3>
+        <span className="flex items-center gap-1.5 rounded-full border border-ui-line bg-ui-card px-3 py-1 text-xs font-bold text-ui-muted">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" /> On the way
+        </span>
+      </div>
+      <p className="mt-1 text-sm text-ui-muted">
+        Once you reach the pickup point, confirm below to get the rider&apos;s OTP.
+      </p>
+
+      <div className="mt-4 flex items-center gap-4 rounded-2xl border border-ui-line bg-ui-card2/60 p-4">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ui-accent text-lg font-extrabold text-ui-onaccent">
+          {user?.fullname?.firstname?.[0]?.toUpperCase() || 'R'}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-bold capitalize text-ui-ink">
+            {user?.fullname?.firstname} {user?.fullname?.lastname}
+          </p>
+          {user?.phone && (
+            <a
+              href={`tel:${user.phone}`}
+              className="mt-0.5 inline-flex items-center gap-1.5 text-xs font-semibold text-ui-ink/80 transition hover:text-ui-ink"
+            >
+              <i className="ri-phone-line text-ui-faint" /> {user.phone}
+            </a>
+          )}
+        </div>
+        <p className="text-lg font-extrabold text-ui-ink">₹{ride?.fare}</p>
+      </div>
+
+      <div className="mt-4 space-y-3 rounded-2xl border border-ui-line px-4">
+        <div className="flex items-center gap-3.5 py-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ui-line bg-ui-card text-ui-muted">
+            <i className="ri-map-pin-user-line" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-sm text-ui-muted">Pickup</p>
+            <p className="truncate font-semibold text-ui-ink">{ride?.pickup}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3.5 border-t border-ui-line py-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ui-line bg-ui-card text-ui-muted">
+            <i className="ri-map-pin-2-fill" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-sm text-ui-muted">Destination</p>
+            <p className="truncate font-semibold text-ui-ink">{ride?.destination}</p>
+          </div>
+        </div>
+      </div>
+
+      <Button size="lg" className="mt-5 w-full" onClick={onReached}>
+        <i className="ri-map-pin-2-fill" /> I&apos;ve reached the pickup location
+      </Button>
+    </div>
+  );
+};
+
+export default ReachedPickup;

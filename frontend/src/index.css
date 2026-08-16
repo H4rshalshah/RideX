@@ -149,12 +149,13 @@
   }
 }
 
-/* Soften map tiles so they blend with the UI — muted, never washed out */
+/* Soften map tiles so they blend with the UI — the street grid fades into
+   the background (both themes) and the map reads as a subtle texture. */
 .map-tiles-dark .leaflet-tile {
-  filter: saturate(0.6) brightness(0.86) contrast(0.96);
+  filter: saturate(0.35) brightness(0.9) contrast(0.84);
 }
 .map-tiles-light .leaflet-tile {
-  filter: saturate(0.62) brightness(0.94) contrast(0.97);
+  filter: saturate(0.35) brightness(1.08) contrast(0.84);
 }
 
 /* Live-location pulsing dot (Leaflet map marker) */
