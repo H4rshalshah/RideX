@@ -54,16 +54,16 @@ const CaptainLogin = () => {
       subtitle="Go online and start accepting rides."
       caption="Captain portal"
       footer={
-        <p className="text-center text-sm text-ink-500">
+        <p className="text-center text-sm text-ui-muted">
           Want to drive with RideX?{' '}
-          <Link to="/captain-signup" className="font-semibold text-brand-600 hover:text-brand-700">
+          <Link to="/captain-signup" className="font-semibold text-ui-ink underline underline-offset-2 hover:opacity-70">
             Register as a Captain
           </Link>
         </p>
       }
     >
       {serverError && (
-        <div role="alert" className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <div role="alert" className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-500">
           <i className="ri-error-warning-line mt-0.5" /> {serverError}
         </div>
       )}
@@ -91,8 +91,8 @@ const CaptainLogin = () => {
         </Button>
       </form>
       <div className="mt-8">
-        <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-wide text-ink-400">
-          <span className="h-px flex-1 bg-ink-200" /> Rider? <span className="h-px flex-1 bg-ink-200" />
+        <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-wide text-ui-faint">
+          <span className="h-px flex-1 bg-ui-line" /> Rider? <span className="h-px flex-1 bg-ui-line" />
         </div>
         <Link to="/login" className="mt-4 block w-full">
           <Button variant="secondary" size="lg" className="w-full">

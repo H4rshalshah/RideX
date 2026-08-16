@@ -34,32 +34,31 @@ const ConfirmRidePopUp = ({ ride, onClose }) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl font-extrabold text-ink-900">Start the ride</h3>
-        <button
-          onClick={onClose}
-          aria-label="Close"
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-ink-100 text-ink-600 transition hover:bg-ink-200"
-        >
-          <i className="ri-close-line text-xl" />
-        </button>
-      </div>
+      <div className="flex items-center justify-between">      <h3 className="text-xl font-extrabold text-ui-ink">Start the ride</h3>
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-ui-line bg-ui-card text-ui-muted transition hover:bg-ui-card2"
+      >
+        <i className="ri-close-line text-xl" />
+      </button>
+    </div>
 
-      <div className="mt-4 flex items-center gap-4 rounded-2xl border border-ink-100 bg-ink-50/60 p-4">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-extrabold text-white">
+      <div className="mt-4 flex items-center gap-4 rounded-2xl border border-ui-line bg-ui-card2/60 p-4">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ui-accent text-lg font-extrabold text-ui-onaccent">
           {user?.fullname?.firstname?.[0]?.toUpperCase() || 'R'}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-bold capitalize text-ink-900">
+          <p className="truncate font-bold capitalize text-ui-ink">
             {user?.fullname?.firstname} {user?.fullname?.lastname}
           </p>
-          <p className="truncate text-xs text-ink-400">{ride?.destination}</p>
+          <p className="truncate text-xs text-ui-faint">{ride?.destination}</p>
         </div>
-        <p className="text-lg font-extrabold text-ink-900">₹{ride?.fare}</p>
+        <p className="text-lg font-extrabold text-ui-ink">₹{ride?.fare}</p>
       </div>
 
       <form onSubmit={submitHandler} className="mt-5" noValidate>
-        <label htmlFor="captain-otp" className="mb-1.5 block text-sm font-semibold text-ink-800">
+        <label htmlFor="captain-otp" className="mb-1.5 block text-sm font-semibold text-ui-ink">
           Rider OTP
         </label>
         <input
@@ -69,8 +68,8 @@ const ConfirmRidePopUp = ({ ride, onClose }) => {
           inputMode="numeric"
           autoComplete="one-time-code"
           placeholder="6-digit OTP"
-          className={`w-full rounded-2xl border bg-white px-4 py-3.5 text-center font-mono text-2xl font-extrabold tracking-[0.5em] text-ink-900 placeholder:text-ink-300 focus:outline-none focus:ring-2 ${
-            error ? 'border-red-400 focus:ring-red-100' : 'border-ink-200 focus:border-brand-500 focus:ring-brand-100'
+          className={`w-full rounded-2xl border bg-ui-card px-4 py-3.5 text-center font-mono text-2xl font-extrabold tracking-[0.5em] text-ui-ink placeholder:text-ui-faint focus:outline-none focus:ring-2 ${
+            error ? 'border-red-500/60 focus:ring-red-500/15' : 'border-ui-line focus:border-ui-ink focus:ring-ui-ink/10'
           }`}
           aria-invalid={!!error}
         />

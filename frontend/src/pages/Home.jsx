@@ -9,6 +9,7 @@ import WaitingForDriver from '../components/WaitingForDriver';
 import Logo from '../components/brand/Logo';
 import Skeleton from '../components/ui/Skeleton';
 import Button from '../components/ui/Button';
+import ThemeToggle from '../components/ui/ThemeToggle';
 import { useToast } from '../components/ui/Toast';
 import { SocketContext } from '../context/SocketContext';
 import { UserDataContext } from '../context/UserContext';
@@ -201,7 +202,7 @@ const Home = () => {
               <Skeleton key={i} className="h-20 w-full rounded-2xl" />
             ))}
           </div>
-          <p className="mt-4 text-center text-sm font-medium text-ink-400">
+          <p className="mt-4 text-center text-sm font-medium text-ui-faint">
             <i className="ri-loader-4-line mr-1.5 animate-spin" />
             Calculating fares…
           </p>
@@ -259,11 +260,11 @@ const Home = () => {
     return (
       <div>
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-extrabold text-ink-900">Where to?</h2>
+          <h2 className="text-xl font-extrabold text-ui-ink">Where to?</h2>
           {(pickup || destination) && (
             <button
               onClick={resetTrip}
-              className="text-xs font-semibold text-ink-400 transition hover:text-ink-700"
+              className="text-xs font-semibold text-ui-faint transition hover:text-ui-ink"
             >
               Clear trip
             </button>
@@ -278,7 +279,7 @@ const Home = () => {
           }}
         >
           <div className="relative">
-            <span className="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-ink-400">
+            <span className="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-ui-faint">
               <i className="ri-map-pin-user-line" />
             </span>
             <input
@@ -287,13 +288,13 @@ const Home = () => {
               onFocus={() => setActiveField('pickup')}
               placeholder="Pickup location"
               aria-label="Pickup location"
-              className="w-full rounded-2xl border border-ink-200 bg-ink-50 py-3 pl-10 pr-3 text-sm font-medium text-ink-900 placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
+              className="w-full rounded-2xl border border-ui-line bg-ui-card2 py-3 pl-10 pr-3 text-sm font-medium text-ui-ink placeholder:text-ui-faint transition focus:border-ui-ink focus:bg-ui-card focus:outline-none focus:ring-2 focus:ring-ui-ink/10"
             />
             <button
               type="button"
               onClick={useCurrentLocation}
               disabled={locating}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-brand-50 px-2.5 py-1.5 text-xs font-bold text-brand-700 transition hover:bg-brand-100 disabled:opacity-60"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg border border-ui-line bg-ui-card px-2.5 py-1.5 text-xs font-bold text-ui-ink transition hover:bg-ui-card2 disabled:opacity-60"
             >
               {locating ? <i className="ri-loader-4-line animate-spin" /> : <i className="ri-crosshair-2-line mr-1" />}
               {locating ? 'Locating…' : 'Current location'}
@@ -301,7 +302,7 @@ const Home = () => {
           </div>
 
           <div className="relative">
-            <span className="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-ink-400">
+            <span className="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-ui-faint">
               <i className="ri-map-pin-2-line" />
             </span>
             <input
@@ -310,12 +311,12 @@ const Home = () => {
               onFocus={() => setActiveField('destination')}
               placeholder="Enter your destination"
               aria-label="Destination"
-              className="w-full rounded-2xl border border-ink-200 bg-ink-50 py-3 pl-10 pr-3 text-sm font-medium text-ink-900 placeholder:text-ink-400 transition focus:border-brand-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-100"
+              className="w-full rounded-2xl border border-ui-line bg-ui-card2 py-3 pl-10 pr-3 text-sm font-medium text-ui-ink placeholder:text-ui-faint transition focus:border-ui-ink focus:bg-ui-card focus:outline-none focus:ring-2 focus:ring-ui-ink/10"
             />
           </div>
 
           {activeField && (
-            <div className="rounded-2xl border border-ink-100 bg-white p-2 shadow-card">
+            <div className="rounded-2xl border border-ui-line bg-ui-card p-2 shadow-card">
               <LocationSearchPanel
                 suggestions={suggestions}
                 loading={suggestionsLoading}
@@ -338,28 +339,29 @@ const Home = () => {
   };
 
   return (
-    <div className="relative h-screen overflow-hidden bg-ink-950">
+    <div className="relative h-screen overflow-hidden bg-ui-canvas">
       <div className="absolute inset-0">
         <LiveTracking pickup={pickup} destination={destination} />
       </div>
 
       {/* Top bar */}
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
-        <span className="rounded-2xl bg-white/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
+        <span className="rounded-2xl border border-ui-line bg-ui-canvas/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
           <Logo size={26} />
         </span>
         <div className="flex items-center gap-2">
+          <ThemeToggle className="h-10 w-10 border-ui-line bg-ui-canvas/90" />
           <Link
             to="/history"
             aria-label="Ride history"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-700 shadow-card backdrop-blur-sm transition hover:bg-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ui-line bg-ui-canvas/90 text-ui-ink shadow-card backdrop-blur-sm transition hover:bg-ui-card"
           >
             <i className="ri-history-line text-lg" />
           </Link>
           <Link
             to="/profile"
             aria-label="Profile"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-sm font-extrabold text-white shadow-card transition hover:bg-brand-700"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-ui-accent text-sm font-extrabold text-ui-onaccent shadow-card transition hover:opacity-90"
           >
             {initials}
           </Link>
@@ -368,7 +370,7 @@ const Home = () => {
 
       {/* Booking panel */}
       <div className="absolute inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[420px]">
-        <div className="max-h-[72vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-lift lg:max-h-[85vh] lg:rounded-3xl">
+        <div className="max-h-[72vh] overflow-y-auto rounded-t-3xl border-t border-ui-line bg-ui-card p-5 shadow-lift lg:max-h-[85vh] lg:rounded-3xl lg:border lg:border-ui-line">
           {renderPanel()}
         </div>
       </div>

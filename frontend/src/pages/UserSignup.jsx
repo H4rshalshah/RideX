@@ -63,16 +63,16 @@ const UserSignup = () => {
       title="Create your account"
       subtitle="Join RideX and book your first ride in minutes."
       footer={
-        <p className="text-center text-sm text-ink-500">
+        <p className="text-center text-sm text-ui-muted">
           Already have an account?{' '}
-          <Link to="/login" className="font-semibold text-brand-600 hover:text-brand-700">
+          <Link to="/login" className="font-semibold text-ui-ink underline underline-offset-2 hover:opacity-70">
             Log in
           </Link>
         </p>
       }
     >
       {serverError && (
-        <div role="alert" className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <div role="alert" className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-500">
           <i className="ri-error-warning-line mt-0.5" /> {serverError}
         </div>
       )}
@@ -120,7 +120,7 @@ const UserSignup = () => {
           Create account
         </Button>
       </form>
-      <p className="mt-6 text-center text-xs leading-relaxed text-ink-400">
+      <p className="mt-6 text-center text-xs leading-relaxed text-ui-faint">
         By creating an account you agree to RideX&apos;s Terms of Service and Privacy Policy.
       </p>
     </AuthLayout>

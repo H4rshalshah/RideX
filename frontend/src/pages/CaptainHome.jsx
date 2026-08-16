@@ -7,6 +7,7 @@ import LiveTracking from '../components/LiveTracking';
 import Logo from '../components/brand/Logo';
 import Skeleton from '../components/ui/Skeleton';
 import Button from '../components/ui/Button';
+import ThemeToggle from '../components/ui/ThemeToggle';
 import { useToast } from '../components/ui/Toast';
 import { SocketContext } from '../context/SocketContext';
 import { CaptainDataContext } from '../context/CapatainContext';
@@ -114,40 +115,43 @@ const CaptainHome = () => {
   };
 
   return (
-    <div className="relative h-screen overflow-hidden bg-ink-950">
+    <div className="relative h-screen overflow-hidden bg-ui-canvas">
       <div className="absolute inset-0">
         <LiveTracking showLocationNotice={false} />
       </div>
 
       {/* Top bar */}
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
-        <span className="rounded-2xl bg-white/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
+        <span className="rounded-2xl border border-ui-line bg-ui-canvas/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
           <Logo size={26} />
         </span>
-        <Link
-          to="/captain/logout"
-          aria-label="Log out"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-700 shadow-card backdrop-blur-sm transition hover:bg-white"
-        >
-          <i className="ri-logout-box-r-line text-lg" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle className="h-10 w-10 border-ui-line bg-ui-canvas/90" />
+          <Link
+            to="/captain/logout"
+            aria-label="Log out"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ui-line bg-ui-canvas/90 text-ui-ink shadow-card backdrop-blur-sm transition hover:bg-ui-card"
+          >
+            <i className="ri-logout-box-r-line text-lg" />
+          </Link>
+        </div>
       </header>
 
       {/* Status banner */}
       <div className="absolute inset-x-4 top-20 z-20 sm:inset-x-auto sm:left-6">
         <div
           className={`inline-flex items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold shadow-card backdrop-blur-sm ${
-            isOnline ? 'bg-green-600 text-white' : 'bg-ink-900/90 text-white'
+            isOnline ? 'bg-green-600 text-white' : 'bg-ui-accent text-ui-onaccent'
           }`}
         >
-          <span className={`h-2.5 w-2.5 rounded-full ${isOnline ? 'animate-pulse bg-white' : 'bg-ink-400'}`} />
+          <span className={`h-2.5 w-2.5 rounded-full ${isOnline ? 'animate-pulse bg-white' : 'bg-current opacity-40'}`} />
           {isOnline ? 'Online — looking for rides' : 'Offline'}
         </div>
       </div>
 
       {/* Bottom panel */}
       <div className="absolute inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:bottom-6 lg:left-6 lg:w-[420px]">
-        <div className="max-h-[60vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-lift lg:rounded-3xl">
+        <div className="max-h-[60vh] overflow-y-auto rounded-t-3xl border-t border-ui-line bg-ui-card p-5 shadow-lift lg:rounded-3xl lg:border">
           <Button
             size="lg"
             variant={isOnline ? 'danger' : 'primary'}
@@ -178,7 +182,7 @@ const CaptainHome = () => {
         }`}
         aria-hidden={!showRideRequest}
       >
-        <div className="max-h-[80vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-lift lg:rounded-3xl">
+        <div className="max-h-[80vh] overflow-y-auto rounded-t-3xl border-t border-ui-line bg-ui-card p-5 shadow-lift lg:rounded-3xl lg:border">
           {ride && (
             <RidePopUp
               ride={ride}
@@ -192,8 +196,8 @@ const CaptainHome = () => {
 
       {/* OTP confirmation overlay */}
       {showConfirm && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink-950/60 backdrop-blur-sm lg:items-center">
-          <div className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-5 shadow-lift lg:rounded-3xl">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm lg:items-center">
+          <div className="max-h-[85vh] w-full max-w-md overflow-y-auto rounded-t-3xl border border-ui-line bg-ui-card p-5 shadow-lift lg:rounded-3xl">
             {ride && (
               <ConfirmRidePopUp
                 ride={ride}

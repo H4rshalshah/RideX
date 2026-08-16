@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import FinishRide from '../components/FinishRide';
 import LiveTracking from '../components/LiveTracking';
 import Logo from '../components/brand/Logo';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const CaptainRiding = () => {
   const [showFinish, setShowFinish] = useState(false);
@@ -10,38 +11,41 @@ const CaptainRiding = () => {
   const ride = location.state?.ride;
 
   return (
-    <div className="relative h-screen overflow-hidden bg-ink-950">
+    <div className="relative h-screen overflow-hidden bg-ui-canvas">
       <div className="absolute inset-0">
         <LiveTracking pickup={ride?.pickup} destination={ride?.destination} showLocationNotice={false} />
       </div>
 
       {/* Top bar */}
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
-        <span className="rounded-2xl bg-white/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
+        <span className="rounded-2xl border border-ui-line bg-ui-canvas/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
           <Logo size={26} />
         </span>
-        <Link
-          to="/captain-home"
-          aria-label="Back to dashboard"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-700 shadow-card backdrop-blur-sm transition hover:bg-white"
-        >
-          <i className="ri-dashboard-3-line text-lg" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle className="h-10 w-10 border-ui-line bg-ui-canvas/90" />
+          <Link
+            to="/captain-home"
+            aria-label="Back to dashboard"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-ui-line bg-ui-canvas/90 text-ui-ink shadow-card backdrop-blur-sm transition hover:bg-ui-card"
+          >
+            <i className="ri-dashboard-3-line text-lg" />
+          </Link>
+        </div>
       </header>
 
       {/* Ride status bar */}
-      <div className="absolute inset-x-4 bottom-0 z-20 rounded-t-3xl bg-white p-5 shadow-lift sm:inset-x-auto sm:bottom-6 sm:left-6 sm:w-[420px] sm:rounded-3xl">
+      <div className="absolute inset-x-4 bottom-0 z-20 rounded-t-3xl border border-ui-line bg-ui-card p-5 shadow-lift sm:inset-x-auto sm:bottom-6 sm:left-6 sm:w-[420px] sm:rounded-3xl">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <p className="flex items-center gap-2 text-sm font-bold text-green-700">
+            <p className="flex items-center gap-2 text-sm font-bold text-green-600">
               <i className="ri-radio-button-line animate-pulse" /> Ride in progress
             </p>
-            <h4 className="mt-1 truncate text-lg font-extrabold capitalize text-ink-900">
+            <h4 className="mt-1 truncate text-lg font-extrabold capitalize text-ui-ink">
               {ride?.user?.fullname?.firstname} {ride?.user?.fullname?.lastname}
             </h4>
-            <p className="truncate text-sm text-ink-500">→ {ride?.destination}</p>
+            <p className="truncate text-sm text-ui-muted">→ {ride?.destination}</p>
           </div>
-          <p className="shrink-0 text-2xl font-extrabold text-ink-900">₹{ride?.fare}</p>
+          <p className="shrink-0 text-2xl font-extrabold text-ui-ink">₹{ride?.fare}</p>
         </div>
         <button
           onClick={() => setShowFinish(true)}
@@ -58,7 +62,7 @@ const CaptainRiding = () => {
         }`}
         aria-hidden={!showFinish}
       >
-        <div className="max-h-[80vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-lift lg:rounded-3xl">
+        <div className="max-h-[80vh] overflow-y-auto rounded-t-3xl border border-ui-line bg-ui-card p-5 shadow-lift lg:rounded-3xl">
           {ride && <FinishRide ride={ride} onClose={() => setShowFinish(false)} />}
         </div>
       </div>

@@ -104,10 +104,10 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
 
   if (!MAPS_KEY) {
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-ink-100 text-center">
-        <i className="ri-map-2-line text-4xl text-ink-300" />
-        <p className="max-w-xs text-sm text-ink-500">
-          Map unavailable — add <code className="rounded bg-ink-200 px-1.5 py-0.5 text-xs">VITE_GOOGLE_MAPS_API_KEY</code> to
+      <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-ui-card2 text-center">
+        <i className="ri-map-2-line text-4xl text-ui-faint" />
+        <p className="max-w-xs text-sm text-ui-muted">
+          Map unavailable — add <code className="rounded border border-ui-line bg-ui-card px-1.5 py-0.5 text-xs">VITE_GOOGLE_MAPS_API_KEY</code> to
           your environment to enable live maps.
         </p>
       </div>
@@ -118,9 +118,9 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
     <LoadScript
       googleMapsApiKey={MAPS_KEY}
       loadingElement={
-        <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-ink-50">
-          <Spinner className="h-7 w-7 text-brand-600" />
-          <p className="text-sm font-medium text-ink-400">Loading map…</p>
+        <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-ui-card2">
+          <Spinner className="h-7 w-7 text-ui-ink" />
+          <p className="text-sm font-medium text-ui-muted">Loading map…</p>
         </div>
       }
     >
@@ -158,8 +158,8 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
       </GoogleMap>
 
       {locationDenied && showLocationNotice && (
-        <div className="absolute left-1/2 top-4 z-10 w-max max-w-[90%] -translate-x-1/2 rounded-xl bg-ink-900/90 px-4 py-2 text-xs font-medium text-white shadow-lift backdrop-blur-sm">
-          <i className="ri-navigation-line mr-1.5 text-brand-300" />
+        <div className="absolute left-1/2 top-4 z-10 w-max max-w-[90%] -translate-x-1/2 rounded-xl bg-ui-accent px-4 py-2 text-xs font-medium text-ui-onaccent shadow-lift">
+          <i className="ri-navigation-line mr-1.5" />
           Enable location access for live tracking
         </div>
       )}

@@ -46,8 +46,8 @@ const LocationSearchPanel = ({ suggestions = [], loading = false, onSelect, empt
 
       {!loading && suggestions.length === 0 && (
         <div className="flex flex-col items-center gap-2 px-4 py-8 text-center">
-          <i className="ri-search-line text-2xl text-ink-300" />
-          <p className="text-sm text-ink-400">{emptyText}</p>
+          <i className="ri-search-line text-2xl text-ui-faint" />
+          <p className="text-sm text-ui-muted">{emptyText}</p>
         </div>
       )}
 
@@ -61,13 +61,13 @@ const LocationSearchPanel = ({ suggestions = [], loading = false, onSelect, empt
             onClick={() => onSelect?.(suggestion)}
             onMouseEnter={() => setActiveIndex(idx)}
             className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition ${
-              idx === activeIndex ? 'bg-brand-50' : 'hover:bg-ink-50'
+              idx === activeIndex ? 'bg-ui-card2' : 'hover:bg-ui-card2'
             }`}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-500">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ui-line bg-ui-card text-ui-muted">
               <i className="ri-map-pin-2-line" />
             </span>
-            <span className="min-w-0 flex-1 text-sm font-medium text-ink-800">
+            <span className="min-w-0 flex-1 text-sm font-medium text-ui-ink">
               {suggestion}
             </span>
           </button>

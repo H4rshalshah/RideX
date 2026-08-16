@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 const ToastContext = createContext(null);
 
 const styles = {
-  success: 'bg-ink-900 text-white',
+  success: 'bg-ui-accent text-ui-onaccent',
   error: 'bg-red-600 text-white',
-  info: 'bg-brand-600 text-white',
+  info: 'bg-ui-accent text-ui-onaccent',
 };
 
 let counter = 0;
@@ -51,7 +51,7 @@ export const ToastProvider = ({ children }) => {
             <span className="flex-1">{t.message}</span>
             <button
               onClick={() => dismiss(t.id)}
-              className="text-current/70 hover:text-current"
+              className="opacity-70 transition hover:opacity-100"
               aria-label="Dismiss notification"
             >
               <i className="ri-close-line text-lg leading-none" />

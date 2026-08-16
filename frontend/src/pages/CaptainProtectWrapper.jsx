@@ -37,9 +37,9 @@ const CaptainProtectWrapper = ({ children }) => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-ink-950">
-        <Logo light size={40} />
-        <div className="flex items-center gap-2.5 text-white/80">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-ui-canvas">
+        <Logo size={40} />
+        <div className="flex items-center gap-2.5 text-ui-muted">
           <Spinner className="h-5 w-5" />
           <p className="text-sm font-medium">Loading your dashboard…</p>
         </div>

@@ -88,16 +88,16 @@ const CaptainSignup = () => {
       subtitle="Register your vehicle and start earning on your schedule."
       caption="Captain portal"
       footer={
-        <p className="text-center text-sm text-ink-500">
+        <p className="text-center text-sm text-ui-muted">
           Already driving with us?{' '}
-          <Link to="/captain-login" className="font-semibold text-brand-600 hover:text-brand-700">
+          <Link to="/captain-login" className="font-semibold text-ui-ink underline underline-offset-2 hover:opacity-70">
             Log in
           </Link>
         </p>
       }
     >
       {serverError && (
-        <div role="alert" className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <div role="alert" className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-500">
           <i className="ri-error-warning-line mt-0.5" /> {serverError}
         </div>
       )}
@@ -142,9 +142,9 @@ const CaptainSignup = () => {
           autoComplete="new-password"
         />
 
-        <div className="rounded-2xl border border-ink-200 bg-ink-50/60 p-4">
-          <p className="mb-4 flex items-center gap-2 text-sm font-bold text-ink-800">
-            <i className="ri-car-line text-brand-600" /> Vehicle information
+        <div className="rounded-2xl border border-ui-line bg-ui-card2/60 p-4">
+          <p className="mb-4 flex items-center gap-2 text-sm font-bold text-ui-ink">
+            <i className="ri-car-line" /> Vehicle information
           </p>
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -177,7 +177,7 @@ const CaptainSignup = () => {
                 error={errors.vehicleCapacity}
               />
               <div>
-                <label htmlFor="vehicleType" className="mb-1.5 block text-sm font-semibold text-ink-800">
+                <label htmlFor="vehicleType" className="mb-1.5 block text-sm font-semibold text-ui-ink">
                   Vehicle type
                 </label>
                 <select
@@ -185,10 +185,10 @@ const CaptainSignup = () => {
                   name="vehicleType"
                   value={vehicleType}
                   onChange={(e) => setVehicleType(e.target.value)}
-                  className={`w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-ink-900 transition-colors focus:outline-none focus:ring-2 ${
+                  className={`w-full rounded-xl border bg-ui-card px-4 py-2.5 text-sm text-ui-ink transition-colors focus:outline-none focus:ring-2 ${
                     errors.vehicleType
-                      ? 'border-red-400 focus:ring-red-100'
-                      : 'border-ink-200 focus:border-brand-500 focus:ring-brand-100'
+                      ? 'border-red-500/60 focus:ring-red-500/15'
+                      : 'border-ui-line focus:border-ui-ink focus:ring-ui-ink/10'
                   }`}
                   aria-invalid={!!errors.vehicleType}
                 >

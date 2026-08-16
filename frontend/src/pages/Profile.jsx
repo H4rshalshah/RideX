@@ -52,17 +52,17 @@ const Profile = () => {
   const initials = (user?.fullname?.firstname?.[0] || 'R').toUpperCase();
 
   return (
-    <div className="min-h-screen bg-ink-50/60">
-      <header className="sticky top-0 z-30 border-b border-ink-100 bg-white/90 backdrop-blur-md">
+    <div className="min-h-screen bg-ui-canvas">
+      <header className="sticky top-0 z-30 border-b border-ui-line bg-ui-canvas/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-4 sm:px-6">
           <Link to="/" aria-label="RideX home">
             <Logo size={28} />
           </Link>
           <nav className="flex items-center gap-1 text-sm font-semibold" aria-label="Account">
-            <Link to="/home" className="rounded-lg px-3 py-2 text-ink-600 transition hover:bg-ink-100">
+            <Link to="/home" className="rounded-lg border border-transparent px-3 py-2 text-ui-muted transition hover:bg-ui-card2">
               Book a ride
             </Link>
-            <Link to="/history" className="rounded-lg px-3 py-2 text-ink-600 transition hover:bg-ink-100">
+            <Link to="/history" className="rounded-lg border border-transparent px-3 py-2 text-ui-muted transition hover:bg-ui-card2">
               Ride history
             </Link>
           </nav>
@@ -71,12 +71,12 @@ const Profile = () => {
 
       <main className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
         <div className="flex items-center gap-4">
-          <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-brand-600 text-2xl font-extrabold text-white shadow-card">
+          <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-ui-accent text-2xl font-extrabold text-ui-onaccent shadow-card">
             {initials}
           </span>
           <div className="min-w-0">
-            <h1 className="truncate text-2xl font-extrabold tracking-tight text-ink-900">{name}</h1>
-            <p className="truncate text-sm text-ink-500">{user?.email}</p>
+            <h1 className="truncate text-2xl font-extrabold tracking-tight text-ui-ink">{name}</h1>
+            <p className="truncate text-sm text-ui-muted">{user?.email}</p>
           </div>
         </div>
 
@@ -89,49 +89,49 @@ const Profile = () => {
                 { label: 'Completed', value: stats.completed, icon: 'ri-check-double-line' },
                 { label: 'Total spent', value: `₹${stats.spent}`, icon: 'ri-wallet-3-line' },
               ].map((s) => (
-                <div key={s.label} className="rounded-2xl border border-ink-100 bg-white p-4 shadow-card">
-                  <i className={`${s.icon} text-xl text-brand-600`} />
-                  <p className="mt-2 text-2xl font-extrabold text-ink-900">{s.value}</p>
-                  <p className="text-xs font-medium text-ink-400">{s.label}</p>
+                <div key={s.label} className="rounded-2xl border border-ui-line bg-ui-card p-4 shadow-card">
+                  <i className={`${s.icon} text-xl text-ui-ink`} />
+                  <p className="mt-2 text-2xl font-extrabold text-ui-ink">{s.value}</p>
+                  <p className="text-xs font-medium text-ui-faint">{s.label}</p>
                 </div>
               ))}
         </section>
 
         {/* Account */}
-        <section aria-label="Account details" className="mt-8 rounded-2xl border border-ink-100 bg-white shadow-card">
-          <h2 className="border-b border-ink-100 px-5 py-4 text-sm font-bold uppercase tracking-wide text-ink-400">
+        <section aria-label="Account details" className="mt-8 rounded-2xl border border-ui-line bg-ui-card shadow-card">
+          <h2 className="border-b border-ui-line px-5 py-4 text-sm font-bold uppercase tracking-wide text-ui-faint">
             Account
           </h2>
-          <div className="divide-y divide-ink-100 px-5">
+          <div className="divide-y divide-ui-line px-5">
             <div className="flex items-center justify-between py-4">
               <div className="flex items-center gap-3">
-                <i className="ri-mail-line text-ink-400" />
+                <i className="ri-mail-line text-ui-faint" />
                 <div>
-                  <p className="text-sm font-semibold text-ink-900">Email</p>
-                  <p className="text-xs text-ink-400">Used to log in to RideX</p>
+                  <p className="text-sm font-semibold text-ui-ink">Email</p>
+                  <p className="text-xs text-ui-faint">Used to log in to RideX</p>
                 </div>
               </div>
-              <p className="max-w-[55%] truncate text-sm text-ink-600">{user?.email}</p>
+              <p className="max-w-[55%] truncate text-sm text-ui-muted">{user?.email}</p>
             </div>
             <div className="flex items-center justify-between py-4">
               <div className="flex items-center gap-3">
-                <i className="ri-wallet-3-line text-ink-400" />
+                <i className="ri-wallet-3-line text-ui-faint" />
                 <div>
-                  <p className="text-sm font-semibold text-ink-900">Payment</p>
-                  <p className="text-xs text-ink-400">Default method for your rides</p>
+                  <p className="text-sm font-semibold text-ui-ink">Payment</p>
+                  <p className="text-xs text-ui-faint">Default method for your rides</p>
                 </div>
               </div>
-              <p className="text-sm text-ink-600">Cash on arrival</p>
+              <p className="text-sm text-ui-muted">Cash on arrival</p>
             </div>
             <div className="flex items-center justify-between py-4">
               <div className="flex items-center gap-3">
-                <i className="ri-shield-check-line text-ink-400" />
+                <i className="ri-shield-check-line text-ui-faint" />
                 <div>
-                  <p className="text-sm font-semibold text-ink-900">Security</p>
-                  <p className="text-xs text-ink-400">OTP-verified ride starts</p>
+                  <p className="text-sm font-semibold text-ui-ink">Security</p>
+                  <p className="text-xs text-ui-faint">OTP-verified ride starts</p>
                 </div>
               </div>
-              <p className="text-sm text-ink-600">Enabled</p>
+              <p className="text-sm text-ui-muted">Enabled</p>
             </div>
           </div>
         </section>

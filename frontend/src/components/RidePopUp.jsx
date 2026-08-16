@@ -6,42 +6,42 @@ const RidePopUp = ({ ride, onAccept, onIgnore, accepting = false }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-extrabold text-ink-900">New ride request</h3>
-        <span className="flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-brand-600" /> Live
+        <h3 className="text-xl font-extrabold text-ui-ink">New ride request</h3>
+        <span className="flex items-center gap-1.5 rounded-full border border-ui-line bg-ui-card px-3 py-1 text-xs font-bold text-ui-muted">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-ui-ink" /> Live
         </span>
       </div>
 
-      <div className="mt-4 flex items-center gap-4 rounded-2xl border border-ink-100 bg-ink-50/60 p-4">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-600 text-lg font-extrabold text-white">
+      <div className="mt-4 flex items-center gap-4 rounded-2xl border border-ui-line bg-ui-card2/60 p-4">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ui-accent text-lg font-extrabold text-ui-onaccent">
           {user?.fullname?.firstname?.[0]?.toUpperCase() || 'R'}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-bold capitalize text-ink-900">
+          <p className="truncate font-bold capitalize text-ui-ink">
             {user?.fullname?.firstname} {user?.fullname?.lastname}
           </p>
-          <p className="text-xs text-ink-400">Waiting near pickup</p>
+          <p className="text-xs text-ui-faint">Waiting near pickup</p>
         </div>
-        <p className="text-lg font-extrabold text-ink-900">₹{ride?.fare}</p>
+        <p className="text-lg font-extrabold text-ui-ink">₹{ride?.fare}</p>
       </div>
 
-      <div className="mt-4 space-y-3 rounded-2xl border border-ink-100 px-4">
+      <div className="mt-4 space-y-3 rounded-2xl border border-ui-line px-4">
         <div className="flex items-center gap-3.5 py-3">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-500">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ui-line bg-ui-card text-ui-muted">
             <i className="ri-map-pin-user-line" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm text-ink-500">Pickup</p>
-            <p className="truncate font-semibold text-ink-900">{ride?.pickup}</p>
+            <p className="text-sm text-ui-muted">Pickup</p>
+            <p className="truncate font-semibold text-ui-ink">{ride?.pickup}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3.5 border-t border-ink-100 py-3">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-100 text-ink-500">
+        <div className="flex items-center gap-3.5 border-t border-ui-line py-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-ui-line bg-ui-card text-ui-muted">
             <i className="ri-map-pin-2-fill" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm text-ink-500">Destination</p>
-            <p className="truncate font-semibold text-ink-900">{ride?.destination}</p>
+            <p className="text-sm text-ui-muted">Destination</p>
+            <p className="truncate font-semibold text-ui-ink">{ride?.destination}</p>
           </div>
         </div>
       </div>
