@@ -252,22 +252,22 @@ const Landing = () => {
       {/* ── CTA band ─────────────────────────────────────── */}
       <section className="pb-20 sm:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="relative overflow-hidden rounded-3xl bg-ui-accent px-6 py-14 text-center text-ui-onaccent sm:px-12">
-            <h2 className="relative text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <Reveal className="relative overflow-hidden rounded-3xl border border-ui-line bg-ui-card px-6 py-14 text-center shadow-card sm:px-12">
+            <h2 className="relative text-3xl font-extrabold tracking-tight text-ui-ink sm:text-4xl">
               Ready to get moving?
             </h2>
-            <p className="relative mx-auto mt-3 max-w-xl text-lg opacity-80">
+            <p className="relative mx-auto mt-3 max-w-xl text-lg text-ui-muted">
               Join RideX today — book your first ride in under a minute, or become a captain and
               start earning.
             </p>
             <div className="relative mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link to={bookHref}>
-                <Button size="lg" variant="light">
+                <Button size="lg" className="w-full sm:w-auto">
                   Book a Ride
                 </Button>
               </Link>
               <Link to="/captain-signup">
-                <Button size="lg" variant="inverse">
+                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
                   Become a Captain
                 </Button>
               </Link>
