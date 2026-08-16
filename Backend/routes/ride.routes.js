@@ -51,6 +51,12 @@ router.get('/history',
     rideController.getRideHistory
 )
 
+router.get('/availability',
+    authMiddleware.authUser,
+    query('pickup').isString().isLength({ min: 3 }).withMessage('Invalid pickup address'),
+    rideController.getCaptainAvailability
+)
+
 router.get('/captain-history',
     authMiddleware.authCaptain,
     rideController.getCaptainRideHistory

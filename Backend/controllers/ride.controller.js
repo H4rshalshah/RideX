@@ -146,6 +146,33 @@ module.exports.cancelRide = async (req, res) => {
     }
 }
 
+// Tells the rider whether any online captain is currently within range of the
+// pickup point — used by the "Looking for a captain" screen to show a real
+// availability status instead of a silent infinite spinner.
+module.exports.getCaptainAvailability = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { pickup } = req.query;
+    const RADIUS_KM = 10;
+
+    try {
+        const pickupCoordinates = await mapService.getAddressCoordinate(pickup);
+        const captains = await mapService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng, RADIUS_KM);
+
+        return res.status(200).json({
+            available: captains.length > 0,
+            count: captains.length,
+            radiusKm: RADIUS_KM,
+            pickup,
+        });
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+}
+
 module.exports.getRideHistory = async (req, res) => {
     try {
         const rides = await rideModel.find({ user: req.user._id })

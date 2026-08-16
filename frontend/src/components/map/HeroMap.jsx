@@ -5,8 +5,10 @@ import 'leaflet/dist/leaflet.css';
 import { useTheme } from '../../context/ThemeContext';
 import MapControls from './MapControls';
 
-const DEFAULT_CENTER = [19.076, 72.8777]; // Mumbai
-const DEFAULT_ZOOM = 12;
+// India-centred default so the landing hero frames the whole subcontinent
+// (Pakistan, Nepal, Bangladesh, Sri Lanka + both seas) in both themes.
+const DEFAULT_CENTER = [22.5, 79.5];
+const DEFAULT_ZOOM = 5;
 
 const liveDotIcon = L.divIcon({
   className: '',
@@ -44,7 +46,7 @@ const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM, showControls = 
 
   return (
     <MapContainer
-      center={userPos || center}
+      center={center}
       zoom={zoom}
       className={`ridex-map h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'} ${className}`}
       style={{ height: '100%', width: '100%' }}
