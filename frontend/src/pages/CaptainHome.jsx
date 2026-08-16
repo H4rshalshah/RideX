@@ -116,7 +116,7 @@ const CaptainHome = () => {
 
   return (
     <div className="relative h-screen overflow-hidden bg-ui-canvas">
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-0">
         <LiveTracking showLocationNotice={false} />
       </div>
 
@@ -150,8 +150,8 @@ const CaptainHome = () => {
       </div>
 
       {/* Bottom panel */}
-      <div className="absolute inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:bottom-6 lg:left-6 lg:w-[420px]">
-        <div className="max-h-[60vh] overflow-y-auto rounded-t-3xl border-t border-ui-line bg-ui-card p-5 shadow-lift lg:rounded-3xl lg:border">
+      <div className="absolute inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:bottom-6 lg:left-6 lg:w-[400px]">
+        <div className="max-h-[60vh] overflow-y-auto rounded-t-3xl border-t border-ui-line bg-ui-card p-4 shadow-lift lg:rounded-3xl lg:border">
           <Button
             size="lg"
             variant={isOnline ? 'danger' : 'primary'}

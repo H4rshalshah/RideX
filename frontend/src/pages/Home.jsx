@@ -260,7 +260,7 @@ const Home = () => {
     return (
       <div>
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-extrabold text-ui-ink">Where to?</h2>
+          <h2 className="text-lg font-extrabold text-ui-ink">Where to?</h2>
           {(pickup || destination) && (
             <button
               onClick={resetTrip}
@@ -288,7 +288,7 @@ const Home = () => {
               onFocus={() => setActiveField('pickup')}
               placeholder="Pickup location"
               aria-label="Pickup location"
-              className="w-full rounded-2xl border border-ui-line bg-ui-card2 py-3 pl-10 pr-3 text-sm font-medium text-ui-ink placeholder:text-ui-faint transition focus:border-ui-ink focus:bg-ui-card focus:outline-none focus:ring-2 focus:ring-ui-ink/10"
+              className="w-full rounded-2xl border border-ui-line bg-ui-card2 py-2.5 pl-10 pr-3 text-sm font-medium text-ui-ink placeholder:text-ui-faint transition focus:border-ui-ink focus:bg-ui-card focus:outline-none focus:ring-2 focus:ring-ui-ink/10"
             />
             <button
               type="button"
@@ -311,7 +311,7 @@ const Home = () => {
               onFocus={() => setActiveField('destination')}
               placeholder="Enter your destination"
               aria-label="Destination"
-              className="w-full rounded-2xl border border-ui-line bg-ui-card2 py-3 pl-10 pr-3 text-sm font-medium text-ui-ink placeholder:text-ui-faint transition focus:border-ui-ink focus:bg-ui-card focus:outline-none focus:ring-2 focus:ring-ui-ink/10"
+              className="w-full rounded-2xl border border-ui-line bg-ui-card2 py-2.5 pl-10 pr-3 text-sm font-medium text-ui-ink placeholder:text-ui-faint transition focus:border-ui-ink focus:bg-ui-card focus:outline-none focus:ring-2 focus:ring-ui-ink/10"
             />
           </div>
 
@@ -340,7 +340,7 @@ const Home = () => {
 
   return (
     <div className="relative h-screen overflow-hidden bg-ui-canvas">
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-0">
         <LiveTracking pickup={pickup} destination={destination} />
       </div>
 
@@ -369,8 +369,8 @@ const Home = () => {
       </header>
 
       {/* Booking panel */}
-      <div className="absolute inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[420px]">
-        <div className="max-h-[72vh] overflow-y-auto rounded-t-3xl border-t border-ui-line bg-ui-card p-5 shadow-lift lg:max-h-[85vh] lg:rounded-3xl lg:border lg:border-ui-line">
+      <div className="absolute inset-x-0 bottom-0 z-20 lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[400px]">
+        <div className="max-h-[68vh] overflow-y-auto rounded-t-3xl border-t border-ui-line bg-ui-card p-4 shadow-lift lg:max-h-[80vh] lg:rounded-3xl lg:border lg:border-ui-line">
           {renderPanel()}
         </div>
       </div>

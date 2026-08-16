@@ -49,7 +49,7 @@ const Riding = () => {
       </header>
 
       {/* Map */}
-      <div className="relative h-1/2 min-h-[260px]">
+      <div className="relative z-0 h-1/2 min-h-[260px]">
         <LiveTracking pickup={ride?.pickup} destination={ride?.destination} showLocationNotice={false} />
       </div>
 

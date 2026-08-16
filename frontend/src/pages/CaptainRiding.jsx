@@ -12,7 +12,7 @@ const CaptainRiding = () => {
 
   return (
     <div className="relative h-screen overflow-hidden bg-ui-canvas">
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-0">
         <LiveTracking pickup={ride?.pickup} destination={ride?.destination} showLocationNotice={false} />
       </div>
 
@@ -34,7 +34,7 @@ const CaptainRiding = () => {
       </header>
 
       {/* Ride status bar */}
-      <div className="absolute inset-x-4 bottom-0 z-20 rounded-t-3xl border border-ui-line bg-ui-card p-5 shadow-lift sm:inset-x-auto sm:bottom-6 sm:left-6 sm:w-[420px] sm:rounded-3xl">
+      <div className="absolute inset-x-4 bottom-0 z-20 rounded-t-3xl border border-ui-line bg-ui-card p-4 shadow-lift sm:inset-x-auto sm:bottom-6 sm:left-6 sm:w-[400px] sm:rounded-3xl">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
             <p className="flex items-center gap-2 text-sm font-bold text-green-600">
@@ -62,7 +62,7 @@ const CaptainRiding = () => {
         }`}
         aria-hidden={!showFinish}
       >
-        <div className="max-h-[80vh] overflow-y-auto rounded-t-3xl border border-ui-line bg-ui-card p-5 shadow-lift lg:rounded-3xl">
+        <div className="max-h-[80vh] overflow-y-auto rounded-t-3xl border border-ui-line bg-ui-card p-4 shadow-lift lg:rounded-3xl">
           {ride && <FinishRide ride={ride} onClose={() => setShowFinish(false)} />}
         </div>
       </div>
