@@ -4,11 +4,8 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import NetworkArt from '../components/ui/NetworkArt';
-import MovingCar, { CarMotion } from '../components/ui/MovingCar';
-
-// The hero car laps a city block between grid lines (x 160→240, y 160→240) so
-// it rides exactly on the grid and stays visible on every screen size.
-const HERO_CAR_ROUTE = 'M 100 160 L 228 160 Q 240 160 240 172 L 240 228 Q 240 240 228 240 L 172 240 Q 160 240 160 228 L 160 172 Q 160 160 148 160 L 100 160';
+import MovingCar from '../components/ui/MovingCar';
+import GridTraffic from '../components/ui/GridTraffic';
 // Route inside the hero trip-card preview
 const TRIP_CAR_ROUTE = 'M30 190 C 130 190, 90 90, 210 96 S 350 40, 372 34';
 
@@ -149,20 +146,9 @@ const Landing = () => {
 
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-ui-line bg-ui-canvas pb-20 pt-28 sm:pt-32">
-        {/* The car shares the grid's coordinate space so it rides exactly on the grid lines */}
+        {/* Multi-car traffic simulation constrained to the grid lines */}
         <NetworkArt className="opacity-60">
-          <g className="text-ui-ink/60">
-            <path
-              d={HERO_CAR_ROUTE}
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeDasharray="4 10"
-              strokeLinecap="round"
-              fill="none"
-              opacity="0.5"
-            />
-            <CarMotion path={HERO_CAR_ROUTE} duration="14s" carScale={0.85} />
-          </g>
+          <GridTraffic carCount={4} />
         </NetworkArt>
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:px-8">

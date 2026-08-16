@@ -138,9 +138,10 @@
     transform: none;
     transition: none;
   }
-  /* SMIL animations are not covered by the CSS rule below */
+  /* SMIL/JS map animations are not covered by the CSS rule below */
   .ridex-moving-car,
-  .ridex-car-group {
+  .ridex-car-group,
+  .ridex-traffic-car {
     display: none;
   }
   *,
