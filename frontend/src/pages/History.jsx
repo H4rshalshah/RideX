@@ -118,9 +118,9 @@ const History = () => {
   return (
     <div className="min-h-screen bg-ui-canvas">
       <header className="sticky top-0 z-30 border-b border-ui-line bg-ui-canvas/90 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-4 sm:px-6">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/" aria-label="RideX home">
-            <Logo size={28} />
+            <Logo size={30} />
           </Link>
           <nav className="flex items-center gap-1 text-sm font-semibold" aria-label="Account">
             <Link to="/home" className="rounded-lg border border-transparent px-3 py-2 text-ui-muted transition hover:bg-ui-card2">

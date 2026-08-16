@@ -122,20 +122,22 @@ const CaptainHome = () => {
         <LiveTracking showLocationNotice={false} />
       </div>
 
-      {/* Top bar */}
-      <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
-        <Link to="/" aria-label="RideX home" className="rounded-xl p-1 transition hover:opacity-80">
-          <Logo size={26} />
-        </Link>
-        <div className="flex items-center gap-2">
-          <ThemeToggle className="h-10 w-10 border-ui-line bg-ui-canvas/90" />
-          <Link
-            to="/captain/logout"
-            aria-label="Log out"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-ui-line bg-ui-canvas/90 text-ui-ink shadow-card backdrop-blur-sm transition hover:bg-ui-card"
-          >
-            <i className="ri-logout-box-r-line text-lg" />
+      {/* Top bar — same container as the landing navbar so the logo stays put */}
+      <header className="absolute inset-x-0 top-0 z-30">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link to="/" aria-label="RideX home" className="transition hover:opacity-80">
+            <Logo size={30} />
           </Link>
+          <div className="flex items-center gap-2">
+            <ThemeToggle className="h-10 w-10 border-ui-line bg-ui-canvas/90" />
+            <Link
+              to="/captain/logout"
+              aria-label="Log out"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-ui-line bg-ui-canvas/90 text-ui-ink shadow-card backdrop-blur-sm transition hover:bg-ui-card"
+            >
+              <i className="ri-logout-box-r-line text-lg" />
+            </Link>
+          </div>
         </div>
       </header>
 
