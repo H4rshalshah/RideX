@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { CAR_PATH } from './MovingCar';
+import { CAR_PATH } from './carIcon';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * Multi-car traffic simulation for the NetworkArt grid.
@@ -20,7 +21,11 @@ const NODES_Y = [80, 160, 240, 320];
 const INNER = [160, 240]; // always-visible band on every screen size
 
 const SCALES = [0.65, 0.78, 0.7, 0.85];
-const COLORS = [ 'text-ui-ink/45', 'text-ui-ink/65', 'text-ui-ink/80', 'text-ui-ink/90' ];
+const OPACITIES = [0.55, 0.72, 0.88, 1];
+
+// Theme-based traffic colors — vibrant orange in dark mode, electric blue in light
+const DARK_COLOR = '#FF6B00';
+const LIGHT_COLOR = '#2563EB';
 
 const pick = (arr) => arr[ Math.floor(Math.random() * arr.length) ];
 
@@ -141,7 +146,7 @@ const makeCar = (i) => ({
   targetAngle: 0,
   speed: 55 + Math.random() * 40,
   scale: SCALES[ i % SCALES.length ],
-  color: COLORS[ i % COLORS.length ],
+  opacity: OPACITIES[ i % OPACITIES.length ],
   route: null,
   seg: 0,
   segLen: 0,
@@ -149,6 +154,9 @@ const makeCar = (i) => ({
 });
 
 const GridTraffic = ({ carCount = 4 }) => {
+  const { theme } = useTheme();
+  const dark = theme === 'dark';
+  const carColor = dark ? DARK_COLOR : LIGHT_COLOR;
   const stateRef = useRef(null);
   const groupsRef = useRef([]);
 
@@ -191,13 +199,13 @@ const GridTraffic = ({ carCount = 4 }) => {
       {cars.map((car, i) => (
         <g
           key={i}
-          className={`ridex-traffic-car ${car.color}`}
+          className="ridex-traffic-car"
           ref={(el) => {
             groupsRef.current[ i ] = el;
           }}
         >
           <g transform={`translate(${-12 * car.scale} ${-12 * car.scale}) scale(${car.scale})`}>
-            <path d={CAR_PATH} fill="currentColor" />
+            <path d={CAR_PATH} fill={carColor} fillOpacity={car.opacity} />
           </g>
         </g>
       ))}

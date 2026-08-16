@@ -28,7 +28,7 @@ const socials = [
 ];
 
 const Footer = () => (
-  <footer id="contact" className="border-t border-ui-line bg-ui-canvas">
+  <footer id="contact" className="border-t border-ui-line bg-ui-canvas/85 backdrop-blur-sm">
     <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
       <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         <div>

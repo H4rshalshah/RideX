@@ -4,10 +4,12 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import NetworkArt from '../components/ui/NetworkArt';
-import MovingCar from '../components/ui/MovingCar';
 import GridTraffic from '../components/ui/GridTraffic';
-// Route inside the hero trip-card preview
-const TRIP_CAR_ROUTE = 'M30 190 C 130 190, 90 90, 210 96 S 350 40, 372 34';
+import PreviewRoute from '../components/ui/PreviewRoute';
+import { useTheme } from '../context/ThemeContext';
+// Real-world map pin glyph (same shape as fa-solid fa-location-dot)
+const PIN_PATH =
+  'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 4.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5z';
 
 const features = [
   {
@@ -66,68 +68,60 @@ const steps = [
 ];
 
 const HeroVisual = () => (
-  <div className="relative mx-auto w-full max-w-md">
+  <div className="relative mx-auto w-full max-w-sm">
     <div className="relative overflow-hidden rounded-3xl border border-ui-line bg-ui-card shadow-lift">
-      {/* Map-style background with route */}        <div aria-hidden="true" className="relative h-56 overflow-hidden bg-ui-card2">
-          <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgb(var(--color-line))_1px,transparent_1px),linear-gradient(90deg,rgb(var(--color-line))_1px,transparent_1px)] [background-size:32px_32px]" />
-          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 224" fill="none" preserveAspectRatio="none">
-            <path
-              d={TRIP_CAR_ROUTE}
-              stroke="rgb(var(--color-ink))"
-              strokeWidth="2.5"
-              strokeDasharray="2 10"
-              strokeLinecap="round"
-            />
-            <circle cx="30" cy="190" r="8" fill="rgb(var(--color-ink))" stroke="rgb(var(--color-card))" strokeWidth="3" />
-            <circle cx="372" cy="34" r="8" fill="rgb(var(--color-card))" stroke="rgb(var(--color-ink))" strokeWidth="3" />
-          </svg>
-          <MovingCar
-            path={TRIP_CAR_ROUTE}
-            viewBox="0 0 400 224"
-            duration="6s"
-            carScale={1.5}
-            showRoute={false}
-            colorClass="text-ui-accent"
-          />
-          <span className="absolute bottom-3 left-3 rounded-lg border border-ui-line bg-ui-card px-2.5 py-1 text-xs font-semibold text-ui-muted">
-            <i className="ri-navigation-fill mr-1 text-ui-ink" /> Live tracking
-          </span>
-        </div>
+      {/* Live route preview with stop-and-go car animation */}
+      <div aria-hidden="true" className="relative h-44 overflow-hidden bg-ui-card2">
+        <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgb(var(--color-line))_1px,transparent_1px),linear-gradient(90deg,rgb(var(--color-line))_1px,transparent_1px)] [background-size:32px_32px]" />
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 224" fill="none" preserveAspectRatio="none">
+          {/* Pickup + destination pins */}
+          <g transform="translate(40 180)">
+            <path d={PIN_PATH} fill="#10b981" stroke="rgb(var(--color-card))" strokeWidth="2.5" />
+          </g>
+          <g transform="translate(330 55)">
+            <path d={PIN_PATH} fill="#f59e0b" stroke="rgb(var(--color-card))" strokeWidth="2.5" />
+          </g>
+          <PreviewRoute />
+        </svg>
+        <span className="absolute bottom-2.5 left-2.5 rounded-lg border border-ui-line bg-ui-card px-2 py-0.5 text-[11px] font-semibold text-ui-muted">
+          <i className="ri-navigation-fill mr-1 text-ui-ink" /> Live tracking
+        </span>
+      </div>
 
-      {/* Trip card */}
-      <div className="space-y-3 p-4">
-        <div className="flex items-center gap-3 rounded-2xl border border-ui-line bg-ui-card2 p-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-ui-line bg-ui-card text-ui-ink">
-            <i className="ri-map-pin-2-fill text-lg" />
+      {/* Compact trip card */}
+      <div className="space-y-2.5 p-3">
+        <div className="flex items-center gap-2.5 rounded-xl border border-ui-line bg-ui-card2 p-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-ui-line bg-ui-card text-ui-ink">
+            <i className="ri-map-pin-fill text-base" />
           </span>
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-ui-faint">Pickup</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-ui-faint">Pickup</p>
             <p className="truncate text-sm font-medium text-ui-ink">Current location</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 rounded-2xl border border-ui-line bg-ui-card2 p-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-ui-line bg-ui-card text-ui-ink">
-            <i className="ri-map-pin-2-fill text-lg" />
+        <div className="flex items-center gap-2.5 rounded-xl border border-ui-line bg-ui-card2 p-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-ui-line bg-ui-card text-ui-ink">
+            <i className="ri-map-pin-fill text-base" />
           </span>
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-ui-faint">Destination</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-ui-faint">Destination</p>
             <p className="truncate text-sm font-medium text-ui-ink">Central Station</p>
           </div>
         </div>
 
-        <div className="space-y-1 border-t border-ui-line pt-2">
+        <div className="space-y-0.5 border-t border-ui-line pt-1.5">
           {[
             { name: 'Economy', eta: '2 min', price: '₹49' },
             { name: 'Comfort', eta: '4 min', price: '₹89' },
             { name: 'Premium', eta: '6 min', price: '₹129' },
           ].map((ride) => (
-            <div key={ride.name} className="flex items-center justify-between rounded-xl px-3 py-2 transition hover:bg-ui-card2">
-              <div className="flex items-center gap-2.5">
-                <i className="ri-taxi-line text-lg text-ui-faint" />
-                <span className="text-sm font-semibold text-ui-ink">{ride.name}</span>
-                <span className="text-xs text-ui-faint">{ride.eta} away</span>
+            <div key={ride.name} className="flex items-center justify-between rounded-lg px-2.5 py-1.5 transition hover:bg-ui-card2">
+              <div className="flex items-center gap-2">
+                <i className="ri-taxi-line text-base text-ui-faint" />
+                <span className="text-xs font-semibold text-ui-ink">{ride.name}</span>
+                <span className="text-[11px] text-ui-faint">{ride.eta} away</span>
               </div>
-              <span className="text-sm font-bold text-ui-ink">{ride.price}</span>
+              <span className="text-xs font-bold text-ui-ink">{ride.price}</span>
             </div>
           ))}
         </div>
@@ -136,22 +130,37 @@ const HeroVisual = () => (
   </div>
 );
 
+// Full-viewport animated grid backdrop — deep #0B0B0F in dark mode, off-white in light
+const GridBackdrop = () => {
+  const { theme } = useTheme();
+  const dark = theme === 'dark';
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      style={{ backgroundColor: dark ? '#0B0B0F' : '#FAFAFA' }}
+    >
+      <NetworkArt className="opacity-70">
+        <GridTraffic carCount={4} />
+      </NetworkArt>
+    </div>
+  );
+};
+
 const Landing = () => {
   const loggedIn = !!localStorage.getItem('token');
   const bookHref = loggedIn ? '/home' : '/login';
 
   return (
-    <div className="bg-ui-canvas">
-      <Navbar />
+    <div className="relative min-h-screen bg-ui-canvas">
+      <GridBackdrop />
 
-      {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-ui-line bg-ui-canvas pb-20 pt-28 sm:pt-32">
-        {/* Multi-car traffic simulation constrained to the grid lines */}
-        <NetworkArt className="opacity-60">
-          <GridTraffic carCount={4} />
-        </NetworkArt>
+      <div className="relative z-10">
+        <Navbar />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:px-8">
+        {/* ── Hero ─────────────────────────────────────────── */}
+        <section className="relative overflow-hidden border-b border-ui-line pb-20 pt-28 sm:pt-32">
+          <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:px-8">
           <div>
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-ui-line bg-ui-card px-3.5 py-1.5 text-xs font-semibold text-ui-muted">
@@ -348,7 +357,8 @@ const Landing = () => {
         </div>
       </section>
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };

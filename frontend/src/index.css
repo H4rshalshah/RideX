@@ -87,6 +87,26 @@
   }
 }
 
+/* Stop pins popping in the hero preview route (scale + fade from the tip) */
+@keyframes ridex-stop-pop {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.ridex-stop-pop {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: ridex-stop-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* Live-location pulsing dot (Leaflet map marker) */
 .ridex-live-dot {
   position: relative;
@@ -141,7 +161,8 @@
   /* SMIL/JS map animations are not covered by the CSS rule below */
   .ridex-moving-car,
   .ridex-car-group,
-  .ridex-traffic-car {
+  .ridex-traffic-car,
+  .ridex-preview-car {
     display: none;
   }
   *,
