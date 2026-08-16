@@ -1,0 +1,69 @@
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import FinishRide from '../components/FinishRide';
+import LiveTracking from '../components/LiveTracking';
+import Logo from '../components/brand/Logo';
+
+const CaptainRiding = () => {
+  const [showFinish, setShowFinish] = useState(false);
+  const location = useLocation();
+  const ride = location.state?.ride;
+
+  return (
+    <div className="relative h-screen overflow-hidden bg-ink-950">
+      <div className="absolute inset-0">
+        <LiveTracking pickup={ride?.pickup} destination={ride?.destination} showLocationNotice={false} />
+      </div>
+
+      {/* Top bar */}
+      <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
+        <span className="rounded-2xl bg-white/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
+          <Logo size={26} />
+        </span>
+        <Link
+          to="/captain-home"
+          aria-label="Back to dashboard"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-ink-700 shadow-card backdrop-blur-sm transition hover:bg-white"
+        >
+          <i className="ri-dashboard-3-line text-lg" />
+        </Link>
+      </header>
+
+      {/* Ride status bar */}
+      <div className="absolute inset-x-4 bottom-0 z-20 rounded-t-3xl bg-white p-5 shadow-lift sm:inset-x-auto sm:bottom-6 sm:left-6 sm:w-[420px] sm:rounded-3xl">
+        <div className="flex items-center justify-between gap-4">
+          <div className="min-w-0">
+            <p className="flex items-center gap-2 text-sm font-bold text-green-700">
+              <i className="ri-radio-button-line animate-pulse" /> Ride in progress
+            </p>
+            <h4 className="mt-1 truncate text-lg font-extrabold capitalize text-ink-900">
+              {ride?.user?.fullname?.firstname} {ride?.user?.fullname?.lastname}
+            </h4>
+            <p className="truncate text-sm text-ink-500">→ {ride?.destination}</p>
+          </div>
+          <p className="shrink-0 text-2xl font-extrabold text-ink-900">₹{ride?.fare}</p>
+        </div>
+        <button
+          onClick={() => setShowFinish(true)}
+          className="mt-4 w-full rounded-2xl bg-green-600 py-3.5 text-base font-bold text-white transition hover:bg-green-700"
+        >
+          <i className="ri-flag-2-line mr-1.5" /> Complete ride
+        </button>
+      </div>
+
+      {/* Finish ride sheet */}
+      <div
+        className={`fixed inset-x-0 bottom-0 z-40 transition-transform duration-300 lg:inset-x-auto lg:bottom-6 lg:right-6 lg:w-[420px] ${
+          showFinish ? 'translate-y-0' : 'translate-y-full'
+        }`}
+        aria-hidden={!showFinish}
+      >
+        <div className="max-h-[80vh] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-lift lg:rounded-3xl">
+          {ride && <FinishRide ride={ride} onClose={() => setShowFinish(false)} />}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CaptainRiding;
