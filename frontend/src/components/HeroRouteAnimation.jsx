@@ -1,12 +1,12 @@
 /**
  * Decorative animated route for the landing hero: a pickup pin (green) and a
- * destination pin (amber) joined by a winding dashed path with a circular
- * loop in the middle, and a small paper plane flying from pickup to drop-off.
- * The pins are drawn with their tip at (0,0) so the line connects exactly to
- * the location point. Pure SVG (SMIL) — no JS timer.
+ * destination pin (amber) joined by a roller-coaster dashed path (three big
+ * hills), with a small paper plane flying from pickup to drop-off. The pins
+ * are drawn with their tip at (0,0) so the line connects exactly to the
+ * location point. Pure SVG (SMIL) — no JS timer.
  */
 const ROUTE_PATH =
-  'M 52 292 C 120 272, 100 230, 150 212 C 200 194, 220 140, 214 90 A 42 42 0 1 1 130 90 A 42 42 0 1 1 214 90 C 268 78, 320 70, 382 50';
+  'M 52 292 C 85 292, 95 120, 135 120 C 175 120, 175 245, 200 245 C 225 245, 235 85, 270 85 C 305 85, 305 170, 325 170 C 345 170, 350 50, 382 50';
 
 const Pin = ({ x, y, color }) => (
   <g transform={`translate(${x} ${y})`}>
@@ -43,7 +43,7 @@ const HeroRouteAnimation = () => (
       {/* Paper plane flying from pickup to destination */}
       <g>
         <animateMotion
-          dur="7s"
+          dur="8s"
           repeatCount="indefinite"
           rotate="auto"
           calcMode="spline"
