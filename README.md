@@ -113,9 +113,11 @@ cd frontend
 npm run dev
 ```
 
-Open http://localhost:5173, create a rider account, then open a second browser/profile and
-register a captain. Turn the captain **online** (requires location permission), then book a ride as
-the rider — the captain receives the request in real time.
+Open http://localhost:5173. To skip manual account creation, run `npm run seed` in the
+`Backend` folder first (see [Demo Accounts](#demo-accounts)) and log in with the demo
+credentials. Then open a second browser/profile as the captain, turn **Go online** on
+(requires location permission), and book a ride as the rider — the captain receives the request
+in real time.
 
 ## Testing the App
 
@@ -126,11 +128,42 @@ npm run lint    # ESLint
 
 cd ../Backend
 node --check server.js   # quick syntax sanity check
+```## Demo Accounts
+
+Seed the database with a demo rider, an online demo captain (near Mumbai) and a few
+completed rides — great for presentations:
+
+```bash
+cd Backend
+npm run seed
 ```
+
+| Role    | Email             | Password   |
+| ------- | ----------------- | ---------- |
+| Rider   | `demo@ridex.app`  | `demo1234` |
+| Captain | `captain@ridex.app` | `demo1234` |
+
+Log in as the captain and keep the **Go online** toggle active, then log in as the rider and
+book a pickup near Mumbai (`Gateway of India, Mumbai` → `Bandra West, Mumbai`) to watch the
+real-time request → accept → OTP → complete flow.
 
 ## Screenshots
 
-_Add screenshots of the landing page, booking flow and captain dashboard here._
+| Landing page (desktop) | Landing page (mobile) |
+| ---------------------- | --------------------- |
+| ![Landing hero](screenshots/landing-hero.png) | ![Landing mobile](screenshots/landing-mobile.png) |
+
+| Features & How it works | Rider login | Rider signup |
+| ----------------------- | ----------- | ------------ |
+| ![Landing sections](screenshots/landing-sections.png) | ![Login](screenshots/login.png) | ![Signup](screenshots/signup.png) |
+
+| Captain login | Captain signup |
+| ------------- | -------------- |
+| ![Captain login](screenshots/captain-login.png) | ![Captain signup](screenshots/captain-signup.png) |
+
+> The booking map, ride history and captain dashboard screens require a running MongoDB
+> instance and Google Maps keys — they are not included above.
+_
 
 ## Future Improvements
 

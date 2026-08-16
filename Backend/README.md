@@ -60,6 +60,12 @@ setup instructions and the full project overview.
 | GET    | `/rides/history`       | Rider  | Rider's rides, newest first                   |
 | GET    | `/rides/captain-history` | Captain | Captain's rides, newest first               |
 
+## Demo data
+
+`npm run seed` creates a demo rider (`demo@ridex.app` / `demo1234`), an online demo captain
+(`captain@ridex.app` / `demo1234`) near Mumbai, and a few completed rides. Re-running the seed
+replaces only the demo accounts.
+
 ## Socket.io events
 
 Client → server:
