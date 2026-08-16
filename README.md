@@ -106,12 +106,18 @@ VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 ```bash
 # Terminal 1 — backend (http://localhost:3000)
 cd Backend
-npm start        # or: node server.js
+npm run dev       # in-memory MongoDB + auto-seeded demo accounts (no install needed)
+# or with your own MongoDB running:
+npm start         # requires DB_CONNECT in Backend/.env
 
 # Terminal 2 — frontend (http://localhost:5173)
 cd frontend
 npm run dev
 ```
+
+> `npm run dev` in the Backend folder starts an embedded, in-memory MongoDB
+> (`mongodb-memory-server`) and seeds the demo accounts automatically — the fastest way to
+> try the project without installing MongoDB.
 
 Open http://localhost:5173. To skip manual account creation, run `npm run seed` in the
 `Backend` folder first (see [Demo Accounts](#demo-accounts)) and log in with the demo

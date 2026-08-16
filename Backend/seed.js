@@ -23,7 +23,7 @@ const SAMPLE_RIDES = [
   { pickup: 'Colaba Causeway, Mumbai', destination: 'Andheri East, Mumbai', vehicleType: 'auto', fare: 342 },
 ];
 
-async function seed() {
+async function runSeed({ disconnect = true } = {}) {
   if (!process.env.DB_CONNECT) {
     throw new Error('DB_CONNECT is not set. Copy Backend/.env.example to Backend/.env first.');
   }
@@ -75,11 +75,17 @@ async function seed() {
   console.log('\nThe captain is online near Mumbai (19.076, 72.8777).');
   console.log('For a live booking demo, open /home and pick a pickup location near Mumbai.');
 
-  await mongoose.disconnect();
-  console.log('\nDone.');
+  if (disconnect) {
+    await mongoose.disconnect();
+    console.log('\nDone.');
+  }
 }
 
-seed().catch((err) => {
-  console.error(err.message || err);
-  process.exit(1);
-});
+module.exports = { runSeed };
+
+if (require.main === module) {
+  runSeed().catch((err) => {
+    console.error(err.message || err);
+    process.exit(1);
+  });
+}

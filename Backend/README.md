@@ -66,6 +66,10 @@ setup instructions and the full project overview.
 (`captain@ridex.app` / `demo1234`) near Mumbai, and a few completed rides. Re-running the seed
 replaces only the demo accounts.
 
+`npm run dev` is the easiest way to try the API: it boots an embedded in-memory MongoDB
+(`mongodb-memory-server`), starts the server and seeds the demo data automatically — no MongoDB
+installation required. `npm start` runs against a real MongoDB using `DB_CONNECT`.
+
 ## Socket.io events
 
 Client → server:
