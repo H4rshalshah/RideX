@@ -156,9 +156,9 @@
   background-color: #0b0b0d;
 }
 .map-tiles-dark .leaflet-tile {
-  /* Keep the dark map black but readable — background stays near-black
-     while roads and labels are clearly visible */
-  filter: saturate(0.5) brightness(0.68) contrast(1.12);
+  /* Keep the dark map visible — background stays dark while roads and
+     labels are clearly readable (not crushed to pure black) */
+  filter: saturate(0.5) brightness(0.82) contrast(1.05);
 }
 .map-tiles-light .leaflet-tile {
   filter: saturate(0.35) brightness(1.08) contrast(0.84);

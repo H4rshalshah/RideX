@@ -76,10 +76,10 @@ const Landing = () => {
           <HeroMap />
         </div>
 
-        {/* Readability overlays — subtle, map stays visible */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-28 bg-gradient-to-b from-ui-canvas/80 to-transparent" />
-        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-ui-canvas/90 via-ui-canvas/40 to-transparent lg:from-ui-canvas/80 lg:via-ui-canvas/30" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-32 bg-gradient-to-t from-ui-canvas to-transparent" />
+        {/* Readability overlays — subtle, map stays clearly visible */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-24 bg-gradient-to-b from-ui-canvas/60 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-ui-canvas/60 via-ui-canvas/25 to-transparent lg:from-ui-canvas/45 lg:via-ui-canvas/15" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-ui-canvas/70 to-transparent" />
 
         <div className="relative z-10 mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
