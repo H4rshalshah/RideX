@@ -43,8 +43,14 @@ const Riding = () => {
         setDriverPosition({ lat: data.location.ltd, lng: data.location.lng });
       }
     };
-    const onRideEnded = () => {
-      toast('Ride completed — thanks for riding with RideX!', 'success');
+    const onRideEnded = (data) => {
+      // The captain confirms the payment when finishing the ride — thank the
+      // rider or remind them to pay so both sides stay clear.
+      if (data?.paymentStatus === 'received') {
+        toast('Ride completed — payment received. Thanks for riding with RideX!', 'success');
+      } else {
+        toast(`Ride completed — payment of ₹${data?.fare} not done yet. Please pay your captain.`, 'info');
+      }
       navigate('/home');
     };
     socket.on('ride-location-update', onLocationUpdate);

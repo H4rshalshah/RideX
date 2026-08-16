@@ -36,6 +36,7 @@ router.get('/start-ride',
 router.post('/end-ride',
     authMiddleware.authCaptain,
     body('rideId').isMongoId().withMessage('Invalid ride id'),
+    body('paymentReceived').optional().isBoolean().withMessage('paymentReceived must be a boolean').toBoolean(),
     rideController.endRide
 )
 

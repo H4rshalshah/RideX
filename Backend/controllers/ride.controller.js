@@ -112,10 +112,10 @@ module.exports.endRide = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { rideId } = req.body;
+    const { rideId, paymentReceived } = req.body;
 
     try {
-        const ride = await rideService.endRide({ rideId, captain: req.captain });
+        const ride = await rideService.endRide({ rideId, captain: req.captain, paymentReceived });
 
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-ended',

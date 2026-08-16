@@ -157,7 +157,7 @@ module.exports.cancelRide = async ({ rideId, user }) => {
     return ride;
 }
 
-module.exports.endRide = async ({ rideId, captain }) => {
+module.exports.endRide = async ({ rideId, captain, paymentReceived }) => {
     if (!rideId) {
         throw new Error('Ride id is required');
     }
@@ -186,7 +186,10 @@ module.exports.endRide = async ({ rideId, captain }) => {
     await rideModel.findOneAndUpdate({
         _id: rideId
     }, {
-        status: 'completed'
+        status: 'completed',
+        // The captain confirms whether the rider paid; this is carried in the
+        // ride-ended socket event so the rider gets thanked or a reminder.
+        paymentStatus: paymentReceived ? 'received' : 'pending'
     })
 
     // Return the fresh ride so the response + socket event carry status 'completed'

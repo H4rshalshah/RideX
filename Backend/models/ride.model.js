@@ -35,6 +35,14 @@ const rideSchema = new mongoose.Schema({
         default: 'pending',
     },
 
+    // Confirmed by the captain when finishing the ride — both sides can
+    // verify the payment was settled.
+    paymentStatus: {
+        type: String,
+        enum: [ 'pending', 'received' ],
+        default: 'pending',
+    },
+
     duration: {
         type: Number,
     }, // in seconds

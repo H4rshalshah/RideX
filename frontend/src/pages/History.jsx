@@ -45,9 +45,22 @@ const RideCard = ({ ride }) => {
             <p className="text-xs text-ui-faint">{formatDate(ride.createdAt)}</p>
           </div>
         </div>
-        <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-bold ${meta.className}`}>
-          {meta.label}
-        </span>
+        <div className="flex shrink-0 flex-col items-end gap-1.5">
+          <span className={`rounded-full border px-2.5 py-1 text-[11px] font-bold ${meta.className}`}>
+            {meta.label}
+          </span>
+          {ride.status === 'completed' && (
+            <span
+              className={`rounded-full border px-2.5 py-1 text-[11px] font-bold ${
+                ride.paymentStatus === 'received'
+                  ? 'border-green-500/30 bg-green-500/10 text-green-600 dark:border-green-500/40 dark:bg-green-500/15 dark:text-green-400'
+                  : 'border-amber-500/30 bg-amber-500/10 text-amber-600 dark:border-amber-500/40 dark:bg-amber-500/15 dark:text-amber-400'
+              }`}
+            >
+              {ride.paymentStatus === 'received' ? 'Paid ✓' : 'Payment pending'}
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="mt-4 space-y-2.5">

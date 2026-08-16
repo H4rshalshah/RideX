@@ -67,6 +67,7 @@ async function runSeed({ disconnect = true } = {}) {
       captain: captain._id,
       otp: '123456',
       status: 'completed',
+      paymentStatus: 'received',
       ...ride,
     });
   }
