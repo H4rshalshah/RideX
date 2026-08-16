@@ -4,6 +4,12 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import NetworkArt from '../components/ui/NetworkArt';
+import MovingCar from '../components/ui/MovingCar';
+
+// Route the hero car follows across the background grid
+const HERO_CAR_ROUTE = 'M-40 460 C 320 400, 400 250, 760 270 S 1360 170, 1520 140';
+// Route inside the hero trip-card preview
+const TRIP_CAR_ROUTE = 'M30 190 C 130 190, 90 90, 210 96 S 350 40, 372 34';
 
 const features = [
   {
@@ -64,24 +70,31 @@ const steps = [
 const HeroVisual = () => (
   <div className="relative mx-auto w-full max-w-md">
     <div className="relative overflow-hidden rounded-3xl border border-ui-line bg-ui-card shadow-lift">
-      {/* Map-style background with route */}
-      <div aria-hidden="true" className="relative h-56 bg-ui-card2">
-        <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgb(var(--color-line))_1px,transparent_1px),linear-gradient(90deg,rgb(var(--color-line))_1px,transparent_1px)] [background-size:32px_32px]" />
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 224" fill="none" preserveAspectRatio="none">
-          <path
-            d="M30 190 C 130 190, 90 90, 210 96 S 350 40, 372 34"
-            stroke="rgb(var(--color-ink))"
-            strokeWidth="2.5"
-            strokeDasharray="2 10"
-            strokeLinecap="round"
+      {/* Map-style background with route */}        <div aria-hidden="true" className="relative h-56 overflow-hidden bg-ui-card2">
+          <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgb(var(--color-line))_1px,transparent_1px),linear-gradient(90deg,rgb(var(--color-line))_1px,transparent_1px)] [background-size:32px_32px]" />
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 224" fill="none" preserveAspectRatio="none">
+            <path
+              d={TRIP_CAR_ROUTE}
+              stroke="rgb(var(--color-ink))"
+              strokeWidth="2.5"
+              strokeDasharray="2 10"
+              strokeLinecap="round"
+            />
+            <circle cx="30" cy="190" r="8" fill="rgb(var(--color-ink))" stroke="rgb(var(--color-card))" strokeWidth="3" />
+            <circle cx="372" cy="34" r="8" fill="rgb(var(--color-card))" stroke="rgb(var(--color-ink))" strokeWidth="3" />
+          </svg>
+          <MovingCar
+            path={TRIP_CAR_ROUTE}
+            viewBox="0 0 400 224"
+            duration="6s"
+            carScale={1.5}
+            showRoute={false}
+            colorClass="text-ui-accent"
           />
-          <circle cx="30" cy="190" r="8" fill="rgb(var(--color-ink))" stroke="rgb(var(--color-card))" strokeWidth="3" />
-          <circle cx="372" cy="34" r="8" fill="rgb(var(--color-card))" stroke="rgb(var(--color-ink))" strokeWidth="3" />
-        </svg>
-        <span className="absolute bottom-3 left-3 rounded-lg border border-ui-line bg-ui-card px-2.5 py-1 text-xs font-semibold text-ui-muted">
-          <i className="ri-navigation-fill mr-1 text-ui-ink" /> Live tracking
-        </span>
-      </div>
+          <span className="absolute bottom-3 left-3 rounded-lg border border-ui-line bg-ui-card px-2.5 py-1 text-xs font-semibold text-ui-muted">
+            <i className="ri-navigation-fill mr-1 text-ui-ink" /> Live tracking
+          </span>
+        </div>
 
       {/* Trip card */}
       <div className="space-y-3 p-4">
@@ -136,6 +149,13 @@ const Landing = () => {
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-ui-line bg-ui-canvas pb-20 pt-28 sm:pt-32">
         <NetworkArt className="opacity-60" />
+        <MovingCar
+          path={HERO_CAR_ROUTE}
+          viewBox="0 0 1440 600"
+          duration="18s"
+          carScale={2.6}
+          colorClass="text-ui-ink/60"
+        />
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-10 lg:px-8">
           <div>
