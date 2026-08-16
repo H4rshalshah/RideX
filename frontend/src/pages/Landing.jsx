@@ -4,7 +4,6 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import HeroMap from '../components/map/HeroMap';
-import HeroSearchCard from '../components/HeroSearchCard';
 
 const features = [
   {
@@ -82,8 +81,8 @@ const Landing = () => {
         <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-ui-canvas/90 via-ui-canvas/40 to-transparent lg:from-ui-canvas/80 lg:via-ui-canvas/30" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-32 bg-gradient-to-t from-ui-canvas to-transparent" />
 
-        <div className="relative z-10 mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-12 px-4 pb-16 pt-28 sm:px-6 lg:grid-cols-[1fr_400px] lg:gap-8 lg:px-8">
-          <div>
+        <div className="relative z-10 mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-ui-line bg-ui-card/90 px-3.5 py-1.5 text-xs font-semibold text-ui-muted shadow-card backdrop-blur-sm">
                 <i className="ri-flashlight-fill text-ui-ink" />
@@ -136,10 +135,6 @@ const Landing = () => {
               </div>
             </Reveal>
           </div>
-
-          <Reveal delay={200}>
-            <HeroSearchCard />
-          </Reveal>
         </div>
       </section>
 
