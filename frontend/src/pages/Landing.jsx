@@ -4,7 +4,6 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import HeroMap from '../components/map/HeroMap';
-import HeroRouteAnimation from '../components/HeroRouteAnimation';
 
 const features = [
   {
@@ -82,8 +81,8 @@ const Landing = () => {
         <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-ui-canvas/90 via-ui-canvas/40 to-transparent lg:from-ui-canvas/80 lg:via-ui-canvas/30" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-32 bg-gradient-to-t from-ui-canvas to-transparent" />
 
-        <div className="relative z-10 mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-12 px-4 pb-16 pt-28 sm:px-6 lg:grid-cols-[1fr_460px] lg:gap-10 lg:px-8">
-          <div className="max-w-2xl lg:pl-10">
+        <div className="relative z-10 mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-ui-line bg-ui-card/90 px-3.5 py-1.5 text-xs font-semibold text-ui-muted shadow-card backdrop-blur-sm">
                 <i className="ri-flashlight-fill text-ui-ink" />
@@ -94,7 +93,13 @@ const Landing = () => {
               <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-ui-ink sm:text-5xl lg:text-6xl">
                 Ride smarter.
                 <br />
-                Arrive faster.
+                <span className="relative inline-block pb-1.5">
+                  Arrive faster.
+                  <span
+                    className="absolute inset-x-0 bottom-0 h-[5px] rounded-full bg-ui-ink/15"
+                    aria-hidden="true"
+                  />
+                </span>
               </h1>
             </Reveal>
             <Reveal delay={160}>
@@ -121,11 +126,21 @@ const Landing = () => {
                 </a>
               </div>
             </Reveal>
+            <Reveal delay={320}>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-medium text-ui-muted">
+                {[
+                  { icon: 'ri-shield-check-line', label: 'Verified captains' },
+                  { icon: 'ri-radar-line', label: 'Live tracking' },
+                  { icon: 'ri-bank-card-line', label: 'Cash on arrival' },
+                ].map((item) => (
+                  <span key={item.label} className="inline-flex items-center gap-2">
+                    <i className={`${item.icon} text-ui-faint`} />
+                    {item.label}
+                  </span>
+                ))}
+              </div>
+            </Reveal>
           </div>
-
-          <Reveal delay={240} className="hidden lg:block">
-            <HeroRouteAnimation />
-          </Reveal>
         </div>
       </section>
 

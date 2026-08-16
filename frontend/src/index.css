@@ -199,12 +199,6 @@
   }
 }
 
-/* Animated route dash on the landing hero (paper-plane path) */
-@keyframes ridex-dash {
-  to {
-    stroke-dashoffset: -16;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   html {
