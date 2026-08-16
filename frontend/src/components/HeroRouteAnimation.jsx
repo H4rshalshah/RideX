@@ -1,39 +1,41 @@
 /**
  * Decorative animated route for the landing hero: a pickup pin (green) and a
- * destination pin (amber) joined by a winding dashed path, with a small paper
- * plane flying from pickup to drop-off. Pure SVG (SMIL) — no JS timer.
+ * destination pin (amber) joined by a winding dashed path with a circular
+ * loop in the middle, and a small paper plane flying from pickup to drop-off.
+ * The pins are drawn with their tip at (0,0) so the line connects exactly to
+ * the location point. Pure SVG (SMIL) — no JS timer.
  */
 const ROUTE_PATH =
-  'M 48 272 C 120 238, 60 190, 150 164 C 230 140, 176 100, 262 92 C 318 86, 300 60, 372 44';
+  'M 52 292 C 120 272, 100 230, 150 212 C 200 194, 220 140, 214 90 A 42 42 0 1 1 130 90 A 42 42 0 1 1 214 90 C 268 78, 320 70, 382 50';
 
 const Pin = ({ x, y, color }) => (
-  <g transform={`translate(${x} ${y}) scale(0.06)`}>
-    {/* Classic map pin, tip at the path end */}
+  <g transform={`translate(${x} ${y})`}>
+    {/* Teardrop pin with the tip exactly at (0,0) — the route line meets the tip */}
     <path
-      d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0z"
+      d="M0 0 C -2.5 -4, -6 -6.5, -8 -10.5 C -11 -15.5, -12 -20.5, -10.5 -24.5 C -9 -28.5, -4.5 -31, 0 -31 C 4.5 -31, 9 -28.5, 10.5 -24.5 C 12 -20.5, 11 -15.5, 8 -10.5 C 6 -6.5, 2.5 -4, 0 0 Z"
       fill={color}
     />
-    <circle cx="192" cy="192" r="60" fill="#fff" />
-    <circle cx="192" cy="192" r="38" fill={color} />
+    <circle cx="0" cy="-20" r="7.5" fill="#fff" />
+    <circle cx="0" cy="-20" r="4.5" fill={color} />
   </g>
 );
 
 const HeroRouteAnimation = () => (
-  <div className="mx-auto w-full max-w-[420px]">
-    <svg viewBox="0 0 420 320" fill="none" aria-hidden="true" className="h-auto w-full">
+  <div className="mx-auto w-full max-w-[460px]">
+    <svg viewBox="0 0 440 340" fill="none" aria-hidden="true" className="h-auto w-full">
       <defs>
         <path id="ridex-hero-route" d={ROUTE_PATH} />
       </defs>
 
-      {/* Winding route — dashed line that flows forward */}
+      {/* Winding route with a loop — dashed line that flows forward */}
       <path
         d={ROUTE_PATH}
         fill="none"
         className="stroke-ui-faint/60"
         style={{
-          strokeWidth: 3,
+          strokeWidth: 3.5,
           strokeLinecap: 'round',
-          strokeDasharray: '8 8',
+          strokeDasharray: '9 9',
           animation: 'ridex-dash 1.6s linear infinite',
         }}
       />
@@ -41,7 +43,7 @@ const HeroRouteAnimation = () => (
       {/* Paper plane flying from pickup to destination */}
       <g>
         <animateMotion
-          dur="5.5s"
+          dur="7s"
           repeatCount="indefinite"
           rotate="auto"
           calcMode="spline"
@@ -56,10 +58,10 @@ const HeroRouteAnimation = () => (
         </g>
       </g>
 
-      {/* Pickup pin (start) */}
-      <Pin x={48} y={272} color="#22c55e" />
-      {/* Destination pin (end) */}
-      <Pin x={372} y={44} color="#f59e0b" />
+      {/* Pickup pin (start) — tip on the route start */}
+      <Pin x={52} y={292} color="#22c55e" />
+      {/* Destination pin (end) — tip on the route end */}
+      <Pin x={382} y={50} color="#f59e0b" />
     </svg>
   </div>
 );
