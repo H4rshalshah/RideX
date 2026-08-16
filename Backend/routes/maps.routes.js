@@ -31,9 +31,10 @@ router.get('/get-distance-time',
     mapController.getDistanceTime
 )
 
+// Public autocomplete — used by the landing-page search card before login.
+// Returns only place names, no user data, so it needs no auth.
 router.get('/get-suggestions',
     query('input').isString().isLength({ min: 3 }),
-    authMiddleware.authUser,
     mapController.getAutoCompleteSuggestions
 )
 
