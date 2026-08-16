@@ -150,9 +150,15 @@
 }
 
 /* Soften map tiles so they blend with the UI — the street grid fades into
-   the background (both themes) and the map reads as a subtle texture. */
+   the background and the map reads as a subtle texture. The dark map is
+   pushed to near-black so it matches the theme instead of reading grey. */
+.map-tiles-dark {
+  background-color: #0b0b0d;
+}
 .map-tiles-dark .leaflet-tile {
-  filter: saturate(0.35) brightness(0.9) contrast(0.84);
+  /* Push the grey dark tiles to near-black — background goes ~#000 with
+     only faint road hints and dim labels left */
+  filter: saturate(0.5) brightness(0.5) contrast(1.2);
 }
 .map-tiles-light .leaflet-tile {
   filter: saturate(0.35) brightness(1.08) contrast(0.84);
