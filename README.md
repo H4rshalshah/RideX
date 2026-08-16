@@ -26,6 +26,9 @@ complete trips with OTP-verified starts.
 - **Rider profile** — account details and real ride statistics.
 - **Polished landing page** — hero, features, how-it-works, value props, footer with scroll-reveal
   animations (respects `prefers-reduced-motion`).
+- **Dark & light themes** — a monochrome, Base-style design system (matte black `#0A0A0A` in dark,
+  off-white `#FAFAFA` in light) with a persistent theme toggle. Preview any theme with
+  `?theme=light` / `?theme=dark` in the URL.
 - **Responsive design** — mobile-first layout with a desktop app-style map/booking panel.
 - **Friendly error handling** — validated forms, inline errors, toast notifications and skeleton
   loading states everywhere.
