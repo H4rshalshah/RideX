@@ -32,9 +32,12 @@ complete trips with OTP-verified starts.
 - **Google-style location search** — Places-style autocomplete with recent locations (last 5,
   clearable) stored in `localStorage`, and pickup/destination flows that update the map.
 - **Dark & light themes** — a monochrome, Base-style design system (charcoal `#0B0B0D` in dark,
-  off-white `#FAFAFA` in light) with muted, theme-styled map tiles and a persistent theme
+  off-white `#F7F7F5` in light) with muted, theme-styled map tiles and a persistent theme
   toggle. Preview any theme with `?theme=light` / `?theme=dark` in the URL. Muted tile
   filtering keeps the map from looking washed out in either theme.
+- **Consistent map identity** — the same real map treatment carries from the landing hero into
+  the auth pages (login/signup brand panels) and the booking screens, so the whole product
+  feels like one RideX experience in both themes.
 - **Responsive design** — mobile-first layout with a desktop app-style map/booking panel.
 - **Friendly error handling** — validated forms, inline errors, toast notifications and skeleton
   loading states everywhere.
@@ -165,13 +168,22 @@ real-time request → accept → OTP → complete flow.
 
 ## Screenshots
 
-| Landing page (desktop) | Landing page (mobile) |
-| ---------------------- | --------------------- |
-| ![Landing hero](screenshots/landing-hero.png) | ![Landing mobile](screenshots/landing-mobile.png) |
+**Landing page** — the hero sits on a real full-bleed map (dark and light themes):
 
-| Features & How it works | Rider login | Rider signup |
-| ----------------------- | ----------- | ------------ |
-| ![Landing sections](screenshots/landing-sections.png) | ![Login](screenshots/login.png) | ![Signup](screenshots/signup.png) |
+| Dark theme (desktop) | Light theme (desktop) | Mobile |
+| -------------------- | --------------------- | ------ |
+| ![Landing hero dark](screenshots/landing-hero.png) | ![Landing hero light](screenshots/landing-light.png) | ![Landing mobile](screenshots/landing-mobile.png) |
+
+| Features & How it works |
+| ----------------------- |
+| ![Landing sections](screenshots/landing-sections.png) |
+
+**Authentication** — login/signup carry the same India map background as the landing page,
+in both themes:
+
+| Rider login (dark) | Rider login (light) | Rider signup |
+| ----------------- | ------------------- | ------------ |
+| ![Login](screenshots/login.png) | ![Login light](screenshots/login-light.png) | ![Signup](screenshots/signup.png) |
 
 | Captain login | Captain signup |
 | ------------- | -------------- |

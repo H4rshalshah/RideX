@@ -26,9 +26,11 @@ const TILE_ATTR =
 /**
  * Real map that fills the hero background. Tiles are muted to blend with the
  * UI; the map stays behind all content. Shows a pulsing dot at the user's
- * location when geolocation is granted.
+ * location when geolocation is granted. Set `showControls={false}` for
+ * decorative full-bleed uses (e.g. the auth brand panel) where zoom/re-center
+ * buttons would be out of place.
  */
-const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM }) => {
+const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM, showControls = true, className = '' }) => {
   const { theme } = useTheme();
   const dark = theme === 'dark';
   const [userPos, setUserPos] = useState(null);
@@ -44,7 +46,7 @@ const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM }) => {
     <MapContainer
       center={userPos || center}
       zoom={zoom}
-      className={`ridex-map h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'}`}
+      className={`ridex-map h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'} ${className}`}
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={false}
       zoomControl={false}
@@ -53,7 +55,7 @@ const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM }) => {
       <TileLayer url={tileUrl(dark)} attribution={TILE_ATTR} />
       <AttributionControl position="bottomleft" prefix="Leaflet" />
       {userPos && <Marker position={userPos} icon={liveDotIcon} />}
-      <MapControls target={userPos || center} zoom={zoom + 2} />
+      {showControls && <MapControls target={userPos || center} zoom={zoom + 2} />}
     </MapContainer>
   );
 };
