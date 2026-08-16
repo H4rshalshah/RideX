@@ -156,12 +156,13 @@
   background-color: #0b0b0d;
 }
 .map-tiles-dark .leaflet-tile {
-  /* Keep the dark map visible — background stays dark while roads and
-     labels are clearly readable (not crushed to pure black) */
-  filter: saturate(0.5) brightness(0.82) contrast(1.05);
+  /* Readable and theme-matched: background sits on the ui-line tone, roads
+     stay subtle and labels land on the ui-muted tone */
+  filter: saturate(0.5) brightness(0.78) contrast(1.05);
 }
 .map-tiles-light .leaflet-tile {
-  filter: saturate(0.35) brightness(1.08) contrast(0.84);
+  /* Light map blends into the off-white canvas with readable labels */
+  filter: saturate(0.4) brightness(1.02) contrast(0.98);
 }
 
 /* Live-location pulsing dot (Leaflet map marker) */
