@@ -23,6 +23,18 @@ const http = require('http');
   initializeSocket(server);
 
   const port = process.env.PORT || 3000;
+  server.on('error', async (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\nPort ${port} is already in use.`);
+      console.error('Another RideX server may already be running.');
+      console.error(`Stop it (or set PORT to another value in Backend/.env) and run npm run dev again.`);
+    } else {
+      console.error(err);
+    }
+    await mongod.stop();
+    process.exit(1);
+  });
+
   server.listen(port, async () => {
     console.log(`RideX server is running on http://localhost:${port}`);
 
