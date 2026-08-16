@@ -93,13 +93,7 @@ const Landing = () => {
               <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-ui-ink sm:text-5xl lg:text-6xl">
                 Ride smarter.
                 <br />
-                <span className="relative inline-block pb-1.5">
-                  Arrive faster.
-                  <span
-                    className="absolute inset-x-0 bottom-0 h-[5px] rounded-full bg-ui-ink/15"
-                    aria-hidden="true"
-                  />
-                </span>
+                Arrive faster.
               </h1>
             </Reveal>
             <Reveal delay={160}>
