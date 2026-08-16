@@ -156,9 +156,10 @@
   background-color: #0b0b0d;
 }
 .map-tiles-dark .leaflet-tile {
-  /* Readable and theme-matched: background sits on the ui-line tone, roads
-     stay subtle and labels land on the ui-muted tone */
-  filter: saturate(0.5) brightness(0.78) contrast(1.05);
+  /* dark_only_labels tiles: pure black base with city labels only — no
+     street grid at all. Brightness slightly dims the white labels onto the
+     ui-ink tone so they read like the rest of the dark UI. */
+  filter: saturate(0.5) brightness(0.9) contrast(1.05);
 }
 .map-tiles-light .leaflet-tile {
   /* Light map blends into the off-white canvas with readable labels */
