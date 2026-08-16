@@ -24,11 +24,15 @@ complete trips with OTP-verified starts.
   their location.
 - **Ride history** — filterable, searchable history for riders (and trip stats for captains).
 - **Rider profile** — account details and real ride statistics.
-- **Polished landing page** — hero, features, how-it-works, value props, footer with scroll-reveal
-  animations (respects `prefers-reduced-motion`).
-- **Dark & light themes** — a monochrome, Base-style design system (matte black `#0A0A0A` in dark,
-  off-white `#FAFAFA` in light) with a persistent theme toggle. Preview any theme with
-  `?theme=light` / `?theme=dark` in the URL.
+- **Map-backed landing hero** — a real full-bleed map sits behind the hero content with a
+  compact floating tracking card: pulsing live-tracking pill, live route with pickup/destination
+  pins, a car animated along the route (rotated to its direction of travel) and a re-center
+  control.
+- **Google-style location search** — Places-style autocomplete with recent locations (last 5,
+  clearable) stored in `localStorage`, and pickup/destination flows that update the map.
+- **Dark & light themes** — a monochrome, Base-style design system (charcoal `#0B0B0D` in dark,
+  off-white `#FAFAFA` in light) with muted, theme-styled map tiles and a persistent theme
+  toggle. Preview any theme with `?theme=light` / `?theme=dark` in the URL.
 - **Responsive design** — mobile-first layout with a desktop app-style map/booking panel.
 - **Friendly error handling** — validated forms, inline errors, toast notifications and skeleton
   loading states everywhere.

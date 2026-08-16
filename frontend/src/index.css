@@ -11,7 +11,7 @@
   --color-canvas: 250 250 250;   /* #FAFAFA */
   --color-card: 255 255 255;     /* #FFFFFF */
   --color-card2: 245 245 245;    /* #F5F5F5 */
-  --color-line: 229 229 229;     /* #E5E5E5 */
+  --color-line: 236 236 236;     /* #ECECEC ≈ rgba(0,0,0,0.08) */
   --color-ink: 0 0 0;            /* #000000 */
   --color-muted: 82 82 82;       /* #525252 */
   --color-faint: 140 140 140;    /* #8C8C8C */
@@ -20,15 +20,15 @@
 }
 
 .dark {
-  --color-canvas: 10 10 10;      /* #0A0A0A */
-  --color-card: 31 31 31;        /* #1F1F1F */
-  --color-card2: 38 38 38;       /* #262626 */
-  --color-line: 38 38 38;        /* #262626 */
+  --color-canvas: 11 11 13;      /* #0B0B0D */
+  --color-card: 17 18 20;        /* #111214 */
+  --color-card2: 24 25 27;       /* #18191B */
+  --color-line: 31 32 34;        /* #1F2022 ≈ rgba(255,255,255,0.08) */
   --color-ink: 255 255 255;      /* #FFFFFF */
-  --color-muted: 168 168 168;    /* #A8A8A8 */
-  --color-faint: 110 110 110;    /* #6E6E6E */
+  --color-muted: 163 165 170;    /* #A3A5AA */
+  --color-faint: 108 110 114;    /* #6C6E72 */
   --color-accent: 255 255 255;   /* #FFFFFF */
-  --color-onaccent: 10 10 10;    /* #0A0A0A */
+  --color-onaccent: 11 11 13;    /* #0B0B0D */
 }
 
 @layer base {
@@ -87,24 +87,12 @@
   }
 }
 
-/* Stop pins popping in the hero preview route (scale + fade from the tip) */
-@keyframes ridex-stop-pop {
-  0% {
-    transform: scale(0.2);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+/* Soften map tiles so they blend with the UI instead of glowing */
+.map-tiles-dark .leaflet-tile {
+  filter: saturate(0.65) brightness(0.92) contrast(0.95);
 }
-.ridex-stop-pop {
-  transform-box: fill-box;
-  transform-origin: center bottom;
-  animation: ridex-stop-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+.map-tiles-light .leaflet-tile {
+  filter: saturate(0.7) brightness(1.03) contrast(0.94);
 }
 
 /* Live-location pulsing dot (Leaflet map marker) */
@@ -157,13 +145,6 @@
     opacity: 1;
     transform: none;
     transition: none;
-  }
-  /* SMIL/JS map animations are not covered by the CSS rule below */
-  .ridex-moving-car,
-  .ridex-car-group,
-  .ridex-traffic-car,
-  .ridex-preview-car {
-    display: none;
   }
   *,
   *::before,

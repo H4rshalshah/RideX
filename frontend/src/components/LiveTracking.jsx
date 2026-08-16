@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import api from '../lib/api';
 import Spinner from './ui/Spinner';
+import MapRecenter from './map/MapRecenter';
 import { useTheme } from '../context/ThemeContext';
 
 const DEFAULT_CENTER = [28.6139, 77.209]; // New Delhi
@@ -140,7 +141,7 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
       <MapContainer
         center={currentPosition || DEFAULT_CENTER}
         zoom={13}
-        className="h-full w-full"
+        className={`h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'}`}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom
       >
@@ -176,6 +177,7 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
         {pickupCoords && <Marker position={pickupCoords} icon={pinIcon('#10b981', 'P')} title="Pickup" />}
         {destCoords && <Marker position={destCoords} icon={pinIcon('#f59e0b', 'D')} title="Destination" />}
         {currentPosition && <Marker position={currentPosition} icon={liveDotIcon} title="You are here" />}
+        <MapRecenter target={currentPosition || DEFAULT_CENTER} />
       </MapContainer>
 
       {routeLoading && (

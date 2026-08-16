@@ -23,6 +23,22 @@ const Steps = {
   WAITING: 'waiting',
 };
 
+const RECENTS_KEY = 'ridex-recents';
+const readRecents = () => {
+  try {
+    return JSON.parse(localStorage.getItem(RECENTS_KEY)) || [];
+  } catch {
+    return [];
+  }
+};
+const saveRecents = (list) => {
+  try {
+    localStorage.setItem(RECENTS_KEY, JSON.stringify(list.slice(0, 5)));
+  } catch {
+    // storage unavailable — recents just won't persist
+  }
+};
+
 const Home = () => {
   const [pickup, setPickup] = useState('');
   const [destination, setDestination] = useState('');
@@ -39,6 +55,7 @@ const Home = () => {
   const [fareLoading, setFareLoading] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [locating, setLocating] = useState(false);
+  const [recent, setRecent] = useState(readRecents);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -97,11 +114,25 @@ const Home = () => {
     []
   );
 
+  const addRecent = (value) => {
+    setRecent((prev) => {
+      const next = [ value, ...prev.filter((r) => r !== value) ].slice(0, 5);
+      saveRecents(next);
+      return next;
+    });
+  };
+
   const handleSuggestionSelect = (suggestion) => {
     if (activeField === 'pickup') setPickup(suggestion);
     else setDestination(suggestion);
+    addRecent(suggestion);
     setSuggestions([]);
     setActiveField(null);
+  };
+
+  const clearRecents = () => {
+    setRecent([]);
+    saveRecents([]);
   };
 
   const useCurrentLocation = () => {
@@ -321,6 +352,9 @@ const Home = () => {
                 suggestions={suggestions}
                 loading={suggestionsLoading}
                 onSelect={handleSuggestionSelect}
+                onSelectRecent={handleSuggestionSelect}
+                recent={recent}
+                onClearRecent={clearRecents}
                 emptyText={
                   suggestionsLoading
                     ? ''
