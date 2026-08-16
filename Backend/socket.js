@@ -1,6 +1,7 @@
 const socketIo = require('socket.io');
 const userModel = require('./models/user.model');
 const captainModel = require('./models/captain.model');
+const rideModel = require('./models/ride.model');
 
 let io;
 
@@ -40,6 +41,26 @@ function initializeSocket(server) {
                     coordinates: [ location.lng, location.ltd ]
                 }
             });
+
+            // Stream the captain's live position to the rider of any active ride
+            try {
+                const activeRide = await rideModel.findOne({
+                    captain: userId,
+                    status: { $in: [ 'accepted', 'ongoing' ] }
+                }).populate('user', 'socketId');
+
+                if (activeRide?.user?.socketId) {
+                    sendMessageToSocketId(activeRide.user.socketId, {
+                        event: 'ride-location-update',
+                        data: {
+                            rideId: activeRide._id,
+                            location: { ltd: location.ltd, lng: location.lng }
+                        }
+                    });
+                }
+            } catch (err) {
+                console.log('Error streaming captain location:', err.message);
+            }
         });
 
         socket.on('set-status', async (data) => {

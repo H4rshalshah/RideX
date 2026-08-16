@@ -4,7 +4,7 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import Button from '../components/ui/Button';
 import HeroMap from '../components/map/HeroMap';
-import TrackingCard from '../components/map/TrackingCard';
+import HeroSearchCard from '../components/HeroSearchCard';
 
 const features = [
   {
@@ -138,7 +138,7 @@ const Landing = () => {
           </div>
 
           <Reveal delay={200}>
-            <TrackingCard />
+            <HeroSearchCard />
           </Reveal>
         </div>
       </section>

@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, AttributionControl } from 'react-leafl
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTheme } from '../../context/ThemeContext';
-import MapRecenter from './MapRecenter';
+import MapControls from './MapControls';
 
 const DEFAULT_CENTER = [19.076, 72.8777]; // Mumbai
 const DEFAULT_ZOOM = 12;
@@ -53,7 +53,7 @@ const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM }) => {
       <TileLayer url={tileUrl(dark)} attribution={TILE_ATTR} />
       <AttributionControl position="bottomleft" prefix="Leaflet" />
       {userPos && <Marker position={userPos} icon={liveDotIcon} />}
-      <MapRecenter target={userPos || center} zoom={zoom + 2} />
+      <MapControls target={userPos || center} zoom={zoom + 2} />
     </MapContainer>
   );
 };

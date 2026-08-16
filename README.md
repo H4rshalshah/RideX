@@ -19,20 +19,22 @@ complete trips with OTP-verified starts.
   shares with the captain to start the ride.
 - **Live location tracking** — a real map (Leaflet + OpenStreetMap) with live geolocation,
   pickup/destination pins, a drawn driving route and theme-aware tiles — no API key required.
+  After booking, the captain's car is streamed live over Socket.io and animates along the route
+  (bearing-rotated, smooth interpolation — no teleporting).
 - **Upfront fare estimates** — fare + distance + duration for every ride option before booking.
 - **Online/offline captain toggle** — captains only receive requests while online and streaming
   their location.
 - **Ride history** — filterable, searchable history for riders (and trip stats for captains).
 - **Rider profile** — account details and real ride statistics.
 - **Map-backed landing hero** — a real full-bleed map sits behind the hero content with a
-  compact floating tracking card: pulsing live-tracking pill, live route with pickup/destination
-  pins, a car animated along the route (rotated to its direction of travel) and a re-center
-  control.
+  compact search card that prefills the booking flow. Map controls (re-center + zoom) form one
+  clean vertical group in the bottom-right — never overlapping the logo or panels.
 - **Google-style location search** — Places-style autocomplete with recent locations (last 5,
   clearable) stored in `localStorage`, and pickup/destination flows that update the map.
 - **Dark & light themes** — a monochrome, Base-style design system (charcoal `#0B0B0D` in dark,
   off-white `#FAFAFA` in light) with muted, theme-styled map tiles and a persistent theme
-  toggle. Preview any theme with `?theme=light` / `?theme=dark` in the URL.
+  toggle. Preview any theme with `?theme=light` / `?theme=dark` in the URL. Muted tile
+  filtering keeps the map from looking washed out in either theme.
 - **Responsive design** — mobile-first layout with a desktop app-style map/booking panel.
 - **Friendly error handling** — validated forms, inline errors, toast notifications and skeleton
   loading states everywhere.

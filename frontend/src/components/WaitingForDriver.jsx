@@ -1,11 +1,32 @@
+import { useState } from 'react';
+import Button from './ui/Button';
+import api, { getErrorMessage } from '../lib/api';
+import { useToast } from './ui/Toast';
+
 const chip = 'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold';
 
-const WaitingForDriver = ({ ride }) => {
+const WaitingForDriver = ({ ride, onCancel }) => {
+  const [cancelling, setCancelling] = useState(false);
+  const { toast } = useToast();
+
   const captain = ride?.captain;
   const vehicle = captain?.vehicle;
   const vehicleName = vehicle?.vehicleType
     ? { car: 'RideX Car', auto: 'RideX Auto', moto: 'RideX Moto' }[vehicle.vehicleType]
     : 'RideX vehicle';
+
+  const cancelRide = async () => {
+    setCancelling(true);
+    try {
+      await api.post('/rides/cancel', { rideId: ride._id });
+      toast('Ride cancelled.', 'info');
+      onCancel?.();
+    } catch (err) {
+      toast(getErrorMessage(err, 'Could not cancel this ride right now.'), 'error');
+    } finally {
+      setCancelling(false);
+    }
+  };
 
   return (
     <div>
@@ -56,6 +77,18 @@ const WaitingForDriver = ({ ride }) => {
         <i className="ri-information-line mr-1" />
         Share this OTP with your captain to start the ride. Tracking starts automatically.
       </p>
+
+      {onCancel && (
+        <Button
+          variant="danger"
+          size="lg"
+          className="mt-4 w-full"
+          loading={cancelling}
+          onClick={cancelRide}
+        >
+          <i className="ri-close-circle-line" /> Cancel ride
+        </Button>
+      )}
     </div>
   );
 };

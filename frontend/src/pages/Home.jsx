@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import LiveTracking from '../components/LiveTracking';
 import LocationSearchPanel from '../components/LocationSearchPanel';
 import VehiclePanel from '../components/VehiclePanel';
@@ -58,10 +58,19 @@ const Home = () => {
   const [recent, setRecent] = useState(readRecents);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
   const suggestionTimer = useRef(null);
+  const [focusPosition, setFocusPosition] = useState(null);
+
+  // Prefill pickup/destination when arriving from the landing hero search card
+  useEffect(() => {
+    if (location.state?.pickup) setPickup(location.state.pickup);
+    if (location.state?.destination) setDestination(location.state.destination);
+    window.history.replaceState({}, document.title);
+  }, [location.state]);
 
   // Register this socket as a rider and listen for ride events
   useEffect(() => {
@@ -76,7 +85,7 @@ const Home = () => {
       setStep(Steps.WAITING);
     };
     const onRideStarted = (rideData) => {
-      navigate('/riding', { state: { ride: rideData } });
+      navigate('/riding', { state: { ride: rideData, distanceText, durationText } });
     };
     socket.on('ride-confirmed', onRideConfirmed);
     socket.on('ride-started', onRideStarted);
@@ -84,7 +93,7 @@ const Home = () => {
       socket.off('ride-confirmed', onRideConfirmed);
       socket.off('ride-started', onRideStarted);
     };
-  }, [socket, navigate]);
+  }, [socket, navigate, distanceText, durationText]);
 
   useEffect(() => () => clearTimeout(suggestionTimer.current), []);
 
@@ -141,23 +150,43 @@ const Home = () => {
       return;
     }
     setLocating(true);
+
+    const coords = { lat: null, lng: null };
+    const finish = () => setLocating(false);
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
+        coords.lat = position.coords.latitude;
+        coords.lng = position.coords.longitude;
+        setFocusPosition({ lat: coords.lat, lng: coords.lng });
+
         try {
           const res = await api.get('/maps/reverse-geocode', {
-            params: { ltd: position.coords.latitude, lng: position.coords.longitude },
+            params: { ltd: coords.lat, lng: coords.lng },
           });
-          setPickup(res.data.address);
+          setPickup(res.data.address || 'Current location');
         } catch {
-          toast('Could not resolve your current location.', 'error');
+          // Reverse geocoding failed — still centre the map and let the user type
+          setPickup('Current location');
+          toast('Could not resolve your address — you can type it manually.', 'info');
         } finally {
-          setLocating(false);
+          finish();
         }
       },
-      () => {
-        toast('Location permission was denied.', 'error');
-        setLocating(false);
-      }
+      (err) => {
+        finish();
+        const code = err?.code;
+        if (code === 1) {
+          toast('Location permission was denied. Enter your pickup location manually.', 'error');
+        } else if (code === 2) {
+          toast('Location is unavailable right now. Enter your pickup location manually.', 'error');
+        } else if (code === 3) {
+          toast('Timed out getting your location. Try again.', 'error');
+        } else {
+          toast('Could not get your location. Enter your pickup location manually.', 'error');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
 
@@ -284,7 +313,7 @@ const Home = () => {
     }
 
     if (step === Steps.WAITING) {
-      return <WaitingForDriver ride={ride} />;
+      return <WaitingForDriver ride={ride} onCancel={cancelRequest} />;
     }
 
     // FORM
@@ -375,7 +404,12 @@ const Home = () => {
   return (
     <div className="relative h-screen overflow-hidden bg-ui-canvas">
       <div className="absolute inset-0 z-0">
-        <LiveTracking pickup={pickup} destination={destination} mapClassName="ridex-map-has-right-panel" />
+        <LiveTracking
+          pickup={pickup}
+          destination={destination}
+          focusPosition={focusPosition}
+          mapClassName="ridex-map-has-right-panel"
+        />
       </div>
 
       {/* Top bar */}

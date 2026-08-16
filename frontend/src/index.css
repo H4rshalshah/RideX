@@ -8,13 +8,13 @@
    pure white, thin borders and high-contrast typography. */
 
 :root {
-  --color-canvas: 250 250 250;   /* #FAFAFA */
+  --color-canvas: 247 247 245;   /* #F7F7F5 soft off-white (not washed out) */
   --color-card: 255 255 255;     /* #FFFFFF */
-  --color-card2: 245 245 245;    /* #F5F5F5 */
-  --color-line: 236 236 236;     /* #ECECEC ≈ rgba(0,0,0,0.08) */
-  --color-ink: 0 0 0;            /* #000000 */
-  --color-muted: 82 82 82;       /* #525252 */
-  --color-faint: 140 140 140;    /* #8C8C8C */
+  --color-card2: 243 243 241;    /* #F3F3F1 */
+  --color-line: 233 233 231;     /* #E9E9E7 ≈ rgba(0,0,0,0.08) */
+  --color-ink: 17 17 17;         /* #111111 (soft black — premium, not harsh) */
+  --color-muted: 80 80 80;       /* #505050 */
+  --color-faint: 138 138 138;    /* #8A8A8A */
   --color-accent: 0 0 0;         /* #000000 */
   --color-onaccent: 255 255 255; /* #FFFFFF */
 }
@@ -88,55 +88,36 @@
 }
 
 /* ── Leaflet controls (RideX themed) ─────────────────────
-   Zoom lives bottom-right (never under the navbar/logo), re-center
-   stacks above it, attribution bottom-left. All follow the theme. */
+   One vertical control group bottom-right (re-center, zoom in, zoom out),
+   attribution bottom-left. All follow the theme; never under the navbar. */
 
-.ridex-map .leaflet-bottom.leaflet-right {
-  margin: 12px;
-}
 .ridex-map .leaflet-bottom.leaflet-left {
   margin: 12px;
 }
 
-.ridex-map .leaflet-control-zoom {
-  border: 1px solid rgb(var(--color-line));
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  background: rgb(var(--color-card) / 0.92);
-  backdrop-filter: blur(6px);
-}
-.ridex-map .leaflet-control-zoom a {
+/* Buttons inside the custom control group */
+.ridex-map .ridex-map-btn {
   width: 40px;
   height: 40px;
-  line-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 19px;
   font-weight: 500;
+  line-height: 1;
   color: rgb(var(--color-ink));
   border-bottom: 1px solid rgb(var(--color-line));
   background: transparent;
   transition: background-color 0.15s ease, transform 0.1s ease;
 }
-.ridex-map .leaflet-control-zoom a:last-child {
+.ridex-map .ridex-map-btn:last-child {
   border-bottom: none;
 }
-.ridex-map .leaflet-control-zoom a:hover {
+.ridex-map .ridex-map-btn:hover {
   background: rgb(var(--color-card2));
 }
-.ridex-map .leaflet-control-zoom a:active {
+.ridex-map .ridex-map-btn:active {
   transform: scale(0.94);
-}
-.ridex-map .leaflet-control-zoom .leaflet-control-zoom-in {
-  border-radius: 11px 11px 0 0;
-}
-.ridex-map .leaflet-control-zoom .leaflet-control-zoom-out {
-  border-radius: 0 0 11px 11px;
-}
-
-/* Re-center floats just above the zoom cluster */
-.ridex-map .ridex-recenter {
-  bottom: calc(12px + 89px + 8px);
-  right: 12px;
 }
 
 .ridex-map .leaflet-control-attribution {
@@ -151,23 +132,29 @@
   color: rgb(var(--color-muted));
 }
 
-/* Home desktop: the booking panel owns bottom-right — shift map controls
-   to the left of the 400px panel so nothing overlaps */
-@media (min-width: 1024px) {
-  .ridex-map-has-right-panel .leaflet-bottom.leaflet-right {
-    margin-right: 452px;
+/* Mobile: bottom sheets own the bottom of the screen — move the control
+   group to the top-right (below the header) so it stays reachable */
+@media (max-width: 1023px) {
+  .ridex-map .ridex-map-controls {
+    bottom: auto;
+    top: 84px;
   }
-  .ridex-map-has-right-panel .ridex-recenter {
+}
+
+/* Home desktop: the booking panel owns bottom-right — shift the control
+   group to the left of the 400px panel so nothing overlaps */
+@media (min-width: 1024px) {
+  .ridex-map-has-right-panel .ridex-map-controls {
     right: 452px;
   }
 }
 
-/* Soften map tiles so they blend with the UI instead of glowing */
+/* Soften map tiles so they blend with the UI — muted, never washed out */
 .map-tiles-dark .leaflet-tile {
-  filter: saturate(0.65) brightness(0.92) contrast(0.95);
+  filter: saturate(0.6) brightness(0.86) contrast(0.96);
 }
 .map-tiles-light .leaflet-tile {
-  filter: saturate(0.7) brightness(1.03) contrast(0.94);
+  filter: saturate(0.62) brightness(0.94) contrast(0.97);
 }
 
 /* Live-location pulsing dot (Leaflet map marker) */

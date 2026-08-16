@@ -81,7 +81,8 @@ installation required. `npm start` runs against a real MongoDB using `DB_CONNECT
 Client → server:
 
 - `join` — register socket for a user/captain (`{ userId, userType }`).
-- `update-location-captain` — stream captain location (`{ userId, location: { ltd, lng } }`).
+- `update-location-captain` — stream captain location (`{ userId, location: { ltd, lng } }`);
+  while the captain has an accepted/ongoing ride, the rider receives it as `ride-location-update`.
 - `set-status` — go online/offline (`{ userId, status: 'active' | 'inactive' }`).
 
 Server → client:
@@ -89,6 +90,7 @@ Server → client:
 - `new-ride` — sent to online captains within radius of the pickup.
 - `ride-confirmed` — sent to the rider when a captain accepts.
 - `ride-started` — sent to the rider when the captain starts the ride.
+- `ride-location-update` — sent to the rider with the captain's live position during the ride.
 - `ride-ended` — sent to the rider when the ride is completed.
 
 ## Ride statuses

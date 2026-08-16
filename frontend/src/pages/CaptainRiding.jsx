@@ -1,14 +1,44 @@
-import { useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import FinishRide from '../components/FinishRide';
 import LiveTracking from '../components/LiveTracking';
 import Logo from '../components/brand/Logo';
 import ThemeToggle from '../components/ui/ThemeToggle';
+import { useToast } from '../components/ui/Toast';
+import { SocketContext } from '../context/SocketContext';
+import { CaptainDataContext } from '../context/CapatainContext';
 
 const CaptainRiding = () => {
   const [showFinish, setShowFinish] = useState(false);
   const location = useLocation();
   const ride = location.state?.ride;
+  const { socket } = useContext(SocketContext);
+  const { captain } = useContext(CaptainDataContext);
+  const { toast } = useToast();
+  const locationTimer = useRef(null);
+
+  // Stream the captain's live location to the rider while the ride is active
+  useEffect(() => {
+    if (!socket || !captain?._id) return undefined;
+    const update = () => {
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          socket.emit('update-location-captain', {
+            userId: captain._id,
+            location: { ltd: position.coords.latitude, lng: position.coords.longitude },
+          });
+        },
+        () => {
+          toast('Could not access your location while riding.', 'error');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    };
+    update();
+    locationTimer.current = setInterval(update, 8000);
+    return () => clearInterval(locationTimer.current);
+  }, [socket, captain?._id, toast]);
 
   return (
     <div className="relative h-screen overflow-hidden bg-ui-canvas">

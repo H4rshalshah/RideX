@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMap, ZoomControl, AttributionControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, useMap, AttributionControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import api from '../lib/api';
 import Spinner from './ui/Spinner';
-import MapRecenter from './map/MapRecenter';
+import MapControls from './map/MapControls';
+import DriverCar from './map/DriverCar';
 import { useTheme } from '../context/ThemeContext';
 
 const DEFAULT_CENTER = [28.6139, 77.209]; // New Delhi
@@ -52,13 +53,40 @@ const FitBounds = ({ pickupCoords, destCoords, route, currentPosition }) => {
   return null;
 };
 
+// Flies the camera to an externally requested position (e.g. "Current location" click)
+const FlyToFocus = ({ focus }) => {
+  const map = useMap();
+  const lastKey = useRef(null);
+
+  useEffect(() => {
+    if (!focus) return;
+    const key = `${focus.lat},${focus.lng}`;
+    if (lastKey.current === key) return;
+    lastKey.current = key;
+    map.flyTo([focus.lat, focus.lng], Math.max(map.getZoom(), 14), { duration: 1 });
+  }, [map, focus]);
+
+  return null;
+};
+
 /**
  * Live location map with an optional route between pickup and destination.
  * Uses Leaflet + free OpenStreetMap tiles (no API key required). Addresses are
  * geocoded and routes are fetched through the backend, which falls back to
  * keyless providers (Nominatim/OSRM) when no Google key is configured.
+ *
+ * Optional props:
+ *  - driverPosition: { lat, lng } — animates a captain car marker (live tracking)
+ *  - focusPosition:  { lat, lng } — flies the camera here + shows the user dot
  */
-const LiveTracking = ({ pickup, destination, showLocationNotice = true, mapClassName = '' }) => {
+const LiveTracking = ({
+  pickup,
+  destination,
+  showLocationNotice = true,
+  mapClassName = '',
+  driverPosition = null,
+  focusPosition = null,
+}) => {
   const { theme } = useTheme();
   const dark = theme === 'dark';
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -177,11 +205,15 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true, mapClass
 
         {pickupCoords && <Marker position={pickupCoords} icon={pinIcon('#10b981', 'P')} title="Pickup" />}
         {destCoords && <Marker position={destCoords} icon={pinIcon('#f59e0b', 'D')} title="Destination" />}
-        {currentPosition && <Marker position={currentPosition} icon={liveDotIcon} title="You are here" />}
+        {(focusPosition || currentPosition) && (
+          <Marker position={focusPosition || currentPosition} icon={liveDotIcon} title="You are here" />
+        )}
 
-        <ZoomControl position="bottomright" />
+        {driverPosition && <DriverCar position={driverPosition} />}
+
+        <FlyToFocus focus={focusPosition} />
         <AttributionControl position="bottomleft" prefix="Leaflet" />
-        <MapRecenter target={currentPosition || DEFAULT_CENTER} />
+        <MapControls target={currentPosition || focusPosition || DEFAULT_CENTER} />
       </MapContainer>
 
       {routeLoading && (
