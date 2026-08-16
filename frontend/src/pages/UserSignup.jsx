@@ -9,11 +9,13 @@ import { UserDataContext } from '../context/UserContext';
 import { useContext } from 'react';
 
 const emailRe = /^\S+@\S+\.\S+$/;
+const phoneRe = /^[0-9+\-\s]{10,15}$/;
 
 const UserSignup = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
@@ -30,6 +32,7 @@ const UserSignup = () => {
       next.lastName = 'Last name must be at least 3 characters.';
     if (!email.trim()) next.email = 'Email is required.';
     else if (!emailRe.test(email.trim())) next.email = 'Enter a valid email address.';
+    if (phone.trim() && !phoneRe.test(phone.trim())) next.phone = 'Enter a valid 10–15 digit mobile number.';
     if (!password) next.password = 'Password is required.';
     else if (password.length < 6) next.password = 'Password must be at least 6 characters.';
     setErrors(next);
@@ -46,6 +49,7 @@ const UserSignup = () => {
       const response = await api.post('/users/register', {
         fullname: { firstname: firstName.trim(), lastname: lastName.trim() || undefined },
         email: email.trim(),
+        phone: phone.trim() || undefined,
         password,
       });
       setUser(response.data.user);
@@ -106,6 +110,16 @@ const UserSignup = () => {
           onChange={(e) => setEmail(e.target.value)}
           error={errors.email}
           autoComplete="email"
+        />
+        <Input
+          label="Mobile number"
+          name="phone"
+          type="tel"
+          placeholder="e.g. 98765 43210 (optional)"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          error={errors.phone}
+          autoComplete="tel"
         />
         <PasswordField
           id="password"

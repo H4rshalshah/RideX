@@ -17,8 +17,16 @@ const FinishRide = ({ ride, onClose }) => {
       await api.post('/rides/end-ride', { rideId: ride._id });
       navigate('/captain-home');
     } catch (err) {
-      toast(getErrorMessage(err, 'Could not finish the ride. Please try again.'), 'error');
-      setFinishing(false);
+      const message = getErrorMessage(err, '');
+      // The ride may already be over (completed/cancelled elsewhere) — don't trap
+      // the captain on a stale screen. Treat it as finished and go to the dashboard.
+      if (/not ongoing|not found/i.test(message)) {
+        toast('This ride is already finished.', 'info');
+        navigate('/captain-home');
+      } else {
+        toast(message || 'Could not finish the ride. Please try again.', 'error');
+        setFinishing(false);
+      }
     }
   };
 
@@ -43,6 +51,14 @@ const FinishRide = ({ ride, onClose }) => {
             {user?.fullname?.firstname} {user?.fullname?.lastname}
           </p>
           <p className="text-xs text-ui-faint">Collected on arrival</p>
+          {user?.phone && (
+            <a
+              href={`tel:${user.phone}`}
+              className="mt-0.5 inline-flex items-center gap-1.5 text-xs font-semibold text-ui-ink/80 transition hover:text-ui-ink"
+            >
+              <i className="ri-phone-line text-ui-faint" /> {user.phone}
+            </a>
+          )}
         </div>
         <p className="text-lg font-extrabold text-ui-ink">₹{ride?.fare}</p>
       </div>

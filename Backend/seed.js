@@ -45,6 +45,7 @@ async function runSeed({ disconnect = true } = {}) {
   const rider = await userModel.create({
     fullname: { firstname: 'Alex', lastname: 'Morgan' },
     email: DEMO_RIDER.email,
+    phone: '9876543210',
     password: await userModel.hashPassword(DEMO_RIDER.password),
   });
 
@@ -52,6 +53,7 @@ async function runSeed({ disconnect = true } = {}) {
   const captain = await captainModel.create({
     fullname: { firstname: 'Sam', lastname: 'Rivera' },
     email: DEMO_CAPTAIN.email,
+    phone: '9876501234',
     password: await captainModel.hashPassword(DEMO_CAPTAIN.password),
     status: 'active',
     vehicle: { color: 'Black', plate: 'MH-01-AB-1234', capacity: 4, vehicleType: 'car' },

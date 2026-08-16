@@ -130,7 +130,10 @@ module.exports.startRide = async ({ rideId, otp, captain }) => {
         status: 'ongoing'
     })
 
-    return ride;
+    // Return the fresh ride so the response + socket event carry status 'ongoing'
+    return rideModel.findOne({
+        _id: rideId
+    }).populate('user').populate('captain').select('+otp');
 }
 
 module.exports.cancelRide = async ({ rideId, user }) => {
@@ -168,7 +171,15 @@ module.exports.endRide = async ({ rideId, captain }) => {
         throw new Error('Ride not found');
     }
 
-    if (ride.status !== 'ongoing') {
+    // Allow finishing from 'accepted' or 'ongoing' — a captain can complete a
+    // ride they hold even if it was never formally started (e.g. OTP skipped).
+    // If it is already completed (e.g. double click on Finish ride), return it
+    // as-is instead of erroring so the flow never dead-ends.
+    if (ride.status === 'completed') {
+        return ride;
+    }
+
+    if (![ 'accepted', 'ongoing' ].includes(ride.status)) {
         throw new Error('Ride not ongoing');
     }
 
@@ -178,6 +189,9 @@ module.exports.endRide = async ({ rideId, captain }) => {
         status: 'completed'
     })
 
-    return ride;
+    // Return the fresh ride so the response + socket event carry status 'completed'
+    return rideModel.findOne({
+        _id: rideId
+    }).populate('user').populate('captain').select('+otp');
 }
 

@@ -115,6 +115,16 @@ const Profile = () => {
             </div>
             <div className="flex items-center justify-between py-4">
               <div className="flex items-center gap-3">
+                <i className="ri-phone-line text-ui-faint" />
+                <div>
+                  <p className="text-sm font-semibold text-ui-ink">Mobile number</p>
+                  <p className="text-xs text-ui-faint">Shared with your captain during a ride</p>
+                </div>
+              </div>
+              <p className="max-w-[55%] truncate text-sm text-ui-muted">{user?.phone || 'Not added'}</p>
+            </div>
+            <div className="flex items-center justify-between py-4">
+              <div className="flex items-center gap-3">
                 <i className="ri-wallet-3-line text-ui-faint" />
                 <div>
                   <p className="text-sm font-semibold text-ui-ink">Payment</p>

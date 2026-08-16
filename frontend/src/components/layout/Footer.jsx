@@ -21,10 +21,10 @@ const columns = [
 ];
 
 const socials = [
-  { label: 'Twitter / X', icon: 'ri-twitter-x-fill', href: 'https://twitter.com' },
-  { label: 'Instagram', icon: 'ri-instagram-line', href: 'https://instagram.com' },
-  { label: 'LinkedIn', icon: 'ri-linkedin-fill', href: 'https://linkedin.com' },
-  { label: 'GitHub', icon: 'ri-github-fill', href: 'https://github.com' },
+  { label: 'GitHub', icon: 'ri-github-fill', href: 'https://github.com/H4rshalshah' },
+  { label: 'LinkedIn', icon: 'ri-linkedin-fill', href: 'https://www.linkedin.com/in/h4rshal/' },
+  { label: 'Instagram', icon: 'ri-instagram-line', href: 'https://www.instagram.com/itz_harsh047/' },
+  { label: 'Twitter / X', icon: 'ri-twitter-x-fill', href: 'https://twitter.com/h4rshalshah' },
 ];
 
 const Footer = () => (
@@ -72,10 +72,13 @@ const Footer = () => (
           <h3 className="text-sm font-bold uppercase tracking-wider text-ui-faint">Contact</h3>
           <ul className="mt-4 space-y-2.5 text-sm text-ui-muted">
             <li className="flex items-center gap-2.5">
-              <i className="ri-mail-line text-ui-faint" /> hello@ridex.app
-            </li>
-            <li className="flex items-center gap-2.5">
-              <i className="ri-phone-line text-ui-faint" /> +1 (555) 010-2030
+              <i className="ri-mail-line text-ui-faint" />
+              <a
+                href="mailto:h4rshal.workspace@gmail.com"
+                className="transition hover:text-ui-ink"
+              >
+                h4rshal.workspace@gmail.com
+              </a>
             </li>
             <li className="flex items-start gap-2.5">
               <i className="ri-map-pin-line mt-0.5 text-ui-faint" />
@@ -89,9 +92,7 @@ const Footer = () => (
         <p className="text-xs text-ui-faint">
           © {new Date().getFullYear()} RideX. All rights reserved.
         </p>
-        <p className="text-xs text-ui-faint">
-          RideX is an independent ride-booking application. Not affiliated with Uber.
-        </p>
+        <p className="text-xs text-ui-faint">Made with ❤️ by H4rshal</p>
       </div>
     </div>
   </footer>

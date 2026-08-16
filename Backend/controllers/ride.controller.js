@@ -152,7 +152,7 @@ module.exports.getRideHistory = async (req, res) => {
     try {
         const rides = await rideModel.find({ user: req.user._id })
             .sort({ createdAt: -1 })
-            .populate('captain', 'fullname vehicle');
+            .populate('captain', 'fullname vehicle phone');
         return res.status(200).json(rides);
     } catch (err) {
         return res.status(500).json({ message: err.message });
@@ -163,8 +163,8 @@ module.exports.getCaptainRideHistory = async (req, res) => {
     try {
         const rides = await rideModel.find({ captain: req.captain._id })
             .sort({ createdAt: -1 })
-            .populate('captain', 'fullname vehicle')
-            .populate('user', 'fullname');
+            .populate('captain', 'fullname vehicle phone')
+            .populate('user', 'fullname phone');
         return res.status(200).json(rides);
     } catch (err) {
         return res.status(500).json({ message: err.message });

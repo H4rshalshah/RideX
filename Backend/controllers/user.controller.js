@@ -10,7 +10,7 @@ module.exports.registerUser = async (req, res, next) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { fullname, email, password } = req.body;
+    const { fullname, email, phone, password } = req.body;
 
     const isUserAlready = await userModel.findOne({ email });
 
@@ -24,6 +24,7 @@ module.exports.registerUser = async (req, res, next) => {
         firstname: fullname.firstname,
         lastname: fullname.lastname,
         email,
+        phone,
         password: hashedPassword
     });
 

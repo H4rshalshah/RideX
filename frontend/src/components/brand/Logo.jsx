@@ -1,19 +1,17 @@
 const Logo = ({ light = false, size = 32, className = '' }) => (
   <span className={`inline-flex items-center gap-2 select-none ${className}`}>
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <rect
-        width="64"
-        height="64"
-        rx="16"
-        className={light ? 'fill-white' : 'fill-ui-accent'}
+    <span
+      className={`flex items-center justify-center rounded-lg ${
+        light ? 'bg-white' : 'bg-ui-accent'
+      }`}
+      style={{ width: size, height: size }}
+    >
+      <i
+        className={`ri-map-pin-2-fill ${light ? 'text-black' : 'text-ui-onaccent'}`}
+        style={{ fontSize: Math.round(size * 0.62), lineHeight: 1 }}
+        aria-hidden="true"
       />
-      <path
-        d="M21 21 L43 43 M43 21 L21 43"
-        strokeWidth="8"
-        strokeLinecap="round"
-        className={light ? 'stroke-black' : 'stroke-ui-onaccent'}
-      />
-    </svg>
+    </span>
     <span
       className={`text-xl font-extrabold tracking-tight ${
         light ? 'text-white' : 'text-ui-ink'

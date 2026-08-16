@@ -48,9 +48,9 @@ const CaptainRiding = () => {
 
       {/* Top bar */}
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
-        <span className="rounded-2xl border border-ui-line bg-ui-canvas/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
+        <Link to="/" aria-label="RideX home" className="rounded-xl p-1 transition hover:opacity-80">
           <Logo size={26} />
-        </span>
+        </Link>
         <div className="flex items-center gap-2">
           <ThemeToggle className="h-10 w-10 border-ui-line bg-ui-canvas/90" />
           <Link
@@ -74,6 +74,14 @@ const CaptainRiding = () => {
               {ride?.user?.fullname?.firstname} {ride?.user?.fullname?.lastname}
             </h4>
             <p className="truncate text-sm text-ui-muted">→ {ride?.destination}</p>
+            {ride?.user?.phone && (
+              <a
+                href={`tel:${ride.user.phone}`}
+                className="mt-0.5 inline-flex items-center gap-1.5 text-xs font-semibold text-ui-ink/80 transition hover:text-ui-ink"
+              >
+                <i className="ri-phone-line text-ui-faint" /> {ride.user.phone}
+              </a>
+            )}
           </div>
           <p className="shrink-0 text-2xl font-extrabold text-ui-ink">₹{ride?.fare}</p>
         </div>

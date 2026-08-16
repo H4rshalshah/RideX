@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthLayout from '../components/layout/AuthLayout';
 import Input from '../components/ui/Input';
 import PasswordField from '../components/ui/PasswordField';
@@ -19,6 +19,7 @@ const UserLogin = () => {
 
   const { setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const validate = () => {
     const next = {};
@@ -40,7 +41,10 @@ const UserLogin = () => {
       const response = await api.post('/users/login', { email: email.trim(), password });
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
-      navigate('/home');
+      // If the user arrived from the landing-page booking card, carry the trip
+      // they already typed through to the booking screen.
+      const { pickup, destination } = location.state || {};
+      navigate('/home', { state: { pickup, destination } });
     } catch (err) {
       setServerError(getErrorMessage(err, 'Unable to log in. Please try again.'));
     } finally {

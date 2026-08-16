@@ -20,7 +20,15 @@ const HeroSearchCard = () => {
       toast('Enter both a pickup location and a destination.', 'error');
       return;
     }
-    navigate('/home', { state: { pickup: pickup.trim(), destination: destination.trim() } });
+    const state = { pickup: pickup.trim(), destination: destination.trim() };
+    if (localStorage.getItem('token')) {
+      // Logged in — go straight to the booking screen with the trip prefilled.
+      navigate('/home', { state });
+    } else {
+      // Logged out — send them to log in first; the login page carries the trip
+      // over to /home after a successful sign-in.
+      navigate('/login', { state: { ...state, redirectTo: '/home' } });
+    }
   };
 
   return (

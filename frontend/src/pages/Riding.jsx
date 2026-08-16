@@ -69,9 +69,9 @@ const Riding = () => {
 
       {/* Top bar — consistent with the rest of the app */}
       <header className="absolute inset-x-0 top-0 z-30 flex items-center justify-between p-4 sm:p-5">
-        <span className="rounded-2xl border border-ui-line bg-ui-canvas/90 px-3 py-1.5 shadow-card backdrop-blur-sm">
+        <Link to="/" aria-label="RideX home" className="rounded-xl p-1 transition hover:opacity-80">
           <Logo size={26} />
-        </span>
+        </Link>
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1.5 text-xs font-bold text-green-600 backdrop-blur-sm dark:text-green-400">
             <i className="ri-radio-button-line animate-pulse" /> Ride in progress
@@ -133,6 +133,14 @@ const Riding = () => {
                 {vehicle?.plate}
                 {vehicle?.color ? ` · ${vehicle.color}` : ''}
               </p>
+              {captain?.phone && (
+                <a
+                  href={`tel:${captain.phone}`}
+                  className="mt-0.5 inline-flex items-center gap-1.5 text-xs font-semibold text-ui-ink/80 transition hover:text-ui-ink"
+                >
+                  <i className="ri-phone-line text-ui-faint" /> {captain.phone}
+                </a>
+              )}
             </div>
             <p className="shrink-0 text-xl font-extrabold text-ui-ink">₹{ride?.fare}</p>
           </div>

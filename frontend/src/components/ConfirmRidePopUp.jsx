@@ -53,6 +53,14 @@ const ConfirmRidePopUp = ({ ride, onClose }) => {
             {user?.fullname?.firstname} {user?.fullname?.lastname}
           </p>
           <p className="truncate text-xs text-ui-faint">{ride?.destination}</p>
+          {user?.phone && (
+            <a
+              href={`tel:${user.phone}`}
+              className="mt-0.5 inline-flex items-center gap-1.5 text-xs font-semibold text-ui-ink/80 transition hover:text-ui-ink"
+            >
+              <i className="ri-phone-line text-ui-faint" /> {user.phone}
+            </a>
+          )}
         </div>
         <p className="text-lg font-extrabold text-ui-ink">₹{ride?.fare}</p>
       </div>

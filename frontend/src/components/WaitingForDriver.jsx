@@ -48,6 +48,14 @@ const WaitingForDriver = ({ ride, onCancel }) => {
           <p className="truncate text-sm text-ui-muted">
             {vehicleName} · {vehicle?.plate}
           </p>
+          {captain?.phone && (
+            <a
+              href={`tel:${captain.phone}`}
+              className="mt-0.5 inline-flex items-center gap-1.5 text-xs font-semibold text-ui-ink/80 transition hover:text-ui-ink"
+            >
+              <i className="ri-phone-line text-ui-faint" /> {captain.phone}
+            </a>
+          )}
         </div>
         <div className="text-right">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-ui-faint">Ride OTP</p>

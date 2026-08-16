@@ -1,12 +1,9 @@
 # 🚗 RideX
 
-RideX is a full-stack, real-time ride-booking application — a substantially customized Uber-style
-clone with its own visual identity, UI system and documentation. Riders book Economy, Comfort or
-Premium rides with upfront fares; captains go online, receive ride requests in real time and
-complete trips with OTP-verified starts.
-
-> RideX is an independent project and is **not affiliated with Uber**. No Uber branding or assets
-> are used.
+RideX is a full-stack, real-time ride-booking application — a ride-hailing platform with its own
+visual identity, UI system and documentation. Riders book Economy, Comfort or Premium rides with
+upfront fares; captains go online, receive ride requests in real time and complete trips with
+OTP-verified starts.
 
 ---
 
