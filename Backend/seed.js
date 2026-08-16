@@ -14,8 +14,8 @@ const rideModel = require('./models/ride.model');
 
 const DEMO_RIDER = { email: 'demo@ridex.app', password: 'demo1234' };
 const DEMO_CAPTAIN = { email: 'captain@ridex.app', password: 'demo1234' };
-// Mumbai — book a pickup near here to match the demo captain
-const CAPTAIN_LOCATION = { ltd: 19.076, lng: 72.8777 };
+// Mumbai — near Gateway of India so the suggested demo pickup matches
+const CAPTAIN_LOCATION = { ltd: 18.922, lng: 72.8346 };
 
 const SAMPLE_RIDES = [
   { pickup: 'Gateway of India, Mumbai', destination: 'Bandra West, Mumbai', vehicleType: 'car', fare: 285 },
@@ -74,7 +74,7 @@ async function runSeed({ disconnect = true } = {}) {
   console.log('\nDemo accounts created:\n');
   console.log(`  Rider    → ${DEMO_RIDER.email} / ${DEMO_RIDER.password}`);
   console.log(`  Captain  → ${DEMO_CAPTAIN.email} / ${DEMO_CAPTAIN.password}`);
-  console.log('\nThe captain is online near Mumbai (19.076, 72.8777).');
+  console.log('\nThe captain is online near Gateway of India, Mumbai (18.922, 72.8346).');
   console.log('For a live booking demo, open /home and pick a pickup location near Mumbai.');
 
   if (disconnect) {

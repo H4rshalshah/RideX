@@ -56,6 +56,7 @@ const Home = () => {
   const [confirming, setConfirming] = useState(false);
   const [locating, setLocating] = useState(false);
   const [recent, setRecent] = useState(readRecents);
+  const [bookingAttempt, setBookingAttempt] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -240,6 +241,31 @@ const Home = () => {
     setStep(Steps.FORM);
   };
 
+  // Retry a booking that found no captain: cancel the stale request and send
+  // a fresh one out to captains in the area (same route, same ride type).
+  const retryBooking = async () => {
+    if (ride?._id) {
+      try {
+        await api.post('/rides/cancel', { rideId: ride._id });
+      } catch {
+        // the ride may already be gone — proceed regardless
+      }
+    }
+    setRide(null);
+    setBookingAttempt((n) => n + 1);
+    setConfirming(true);
+    try {
+      const res = await api.post('/rides/create', { pickup, destination, vehicleType });
+      setRide(res.data);
+      setStep(Steps.LOOKING);
+    } catch (err) {
+      toast(getErrorMessage(err, 'Could not book this ride right now.'), 'error');
+      setStep(Steps.FORM);
+    } finally {
+      setConfirming(false);
+    }
+  };
+
   const resetTrip = () => {
     setPickup('');
     setDestination('');
@@ -303,11 +329,13 @@ const Home = () => {
     if (step === Steps.LOOKING) {
       return (
         <LookingForDriver
+          key={bookingAttempt}
           rideType={vehicleType}
           pickup={pickup}
           destination={destination}
           fare={fare}
           onCancel={cancelRequest}
+          onRetry={retryBooking}
         />
       );
     }
