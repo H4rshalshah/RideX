@@ -375,7 +375,7 @@ const Home = () => {
   return (
     <div className="relative h-screen overflow-hidden bg-ui-canvas">
       <div className="absolute inset-0 z-0">
-        <LiveTracking pickup={pickup} destination={destination} />
+        <LiveTracking pickup={pickup} destination={destination} mapClassName="ridex-map-has-right-panel" />
       </div>
 
       {/* Top bar */}

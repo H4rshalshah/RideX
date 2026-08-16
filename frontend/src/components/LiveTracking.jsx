@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, useMap, ZoomControl, AttributionControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import api from '../lib/api';
@@ -58,7 +58,7 @@ const FitBounds = ({ pickupCoords, destCoords, route, currentPosition }) => {
  * geocoded and routes are fetched through the backend, which falls back to
  * keyless providers (Nominatim/OSRM) when no Google key is configured.
  */
-const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
+const LiveTracking = ({ pickup, destination, showLocationNotice = true, mapClassName = '' }) => {
   const { theme } = useTheme();
   const dark = theme === 'dark';
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -141,9 +141,10 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
       <MapContainer
         center={currentPosition || DEFAULT_CENTER}
         zoom={13}
-        className={`h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'}`}
+        className={`ridex-map h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'} ${mapClassName}`}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom
+        zoomControl={false}
       >
         <TileLayer
           url={
@@ -177,6 +178,9 @@ const LiveTracking = ({ pickup, destination, showLocationNotice = true }) => {
         {pickupCoords && <Marker position={pickupCoords} icon={pinIcon('#10b981', 'P')} title="Pickup" />}
         {destCoords && <Marker position={destCoords} icon={pinIcon('#f59e0b', 'D')} title="Destination" />}
         {currentPosition && <Marker position={currentPosition} icon={liveDotIcon} title="You are here" />}
+
+        <ZoomControl position="bottomright" />
+        <AttributionControl position="bottomleft" prefix="Leaflet" />
         <MapRecenter target={currentPosition || DEFAULT_CENTER} />
       </MapContainer>
 

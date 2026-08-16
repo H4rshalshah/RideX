@@ -87,6 +87,81 @@
   }
 }
 
+/* ── Leaflet controls (RideX themed) ─────────────────────
+   Zoom lives bottom-right (never under the navbar/logo), re-center
+   stacks above it, attribution bottom-left. All follow the theme. */
+
+.ridex-map .leaflet-bottom.leaflet-right {
+  margin: 12px;
+}
+.ridex-map .leaflet-bottom.leaflet-left {
+  margin: 12px;
+}
+
+.ridex-map .leaflet-control-zoom {
+  border: 1px solid rgb(var(--color-line));
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  background: rgb(var(--color-card) / 0.92);
+  backdrop-filter: blur(6px);
+}
+.ridex-map .leaflet-control-zoom a {
+  width: 40px;
+  height: 40px;
+  line-height: 38px;
+  font-size: 19px;
+  font-weight: 500;
+  color: rgb(var(--color-ink));
+  border-bottom: 1px solid rgb(var(--color-line));
+  background: transparent;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+.ridex-map .leaflet-control-zoom a:last-child {
+  border-bottom: none;
+}
+.ridex-map .leaflet-control-zoom a:hover {
+  background: rgb(var(--color-card2));
+}
+.ridex-map .leaflet-control-zoom a:active {
+  transform: scale(0.94);
+}
+.ridex-map .leaflet-control-zoom .leaflet-control-zoom-in {
+  border-radius: 11px 11px 0 0;
+}
+.ridex-map .leaflet-control-zoom .leaflet-control-zoom-out {
+  border-radius: 0 0 11px 11px;
+}
+
+/* Re-center floats just above the zoom cluster */
+.ridex-map .ridex-recenter {
+  bottom: calc(12px + 89px + 8px);
+  right: 12px;
+}
+
+.ridex-map .leaflet-control-attribution {
+  background: rgb(var(--color-card) / 0.72);
+  color: rgb(var(--color-faint));
+  font-size: 10px;
+  line-height: 1.4;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+.ridex-map .leaflet-control-attribution a {
+  color: rgb(var(--color-muted));
+}
+
+/* Home desktop: the booking panel owns bottom-right — shift map controls
+   to the left of the 400px panel so nothing overlaps */
+@media (min-width: 1024px) {
+  .ridex-map-has-right-panel .leaflet-bottom.leaflet-right {
+    margin-right: 452px;
+  }
+  .ridex-map-has-right-panel .ridex-recenter {
+    right: 452px;
+  }
+}
+
 /* Soften map tiles so they blend with the UI instead of glowing */
 .map-tiles-dark .leaflet-tile {
   filter: saturate(0.65) brightness(0.92) contrast(0.95);

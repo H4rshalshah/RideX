@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, useMap, AttributionControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTheme } from '../../context/ThemeContext';
@@ -153,13 +153,14 @@ const MiniMap = ({ className = '' }) => {
     <MapContainer
       center={PICKUP}
       zoom={13}
-      className={`h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'} ${className}`}
+      className={`ridex-map h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'} ${className}`}
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={false}
       zoomControl={false}
       attributionControl={false}
     >
       <TileLayer url={tileUrl(dark)} attribution={TILE_ATTR} />
+      <AttributionControl position="bottomleft" prefix="Leaflet" />
       <FitRoute points={DEMO_ROUTE} />
       <Polyline
         positions={DEMO_ROUTE}

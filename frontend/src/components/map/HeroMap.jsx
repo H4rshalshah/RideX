@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, AttributionControl } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTheme } from '../../context/ThemeContext';
@@ -44,12 +44,14 @@ const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM }) => {
     <MapContainer
       center={userPos || center}
       zoom={zoom}
-      className={`h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'}`}
+      className={`ridex-map h-full w-full ${dark ? 'map-tiles-dark' : 'map-tiles-light'}`}
       style={{ height: '100%', width: '100%' }}
       scrollWheelZoom={false}
       zoomControl={false}
+      attributionControl={false}
     >
       <TileLayer url={tileUrl(dark)} attribution={TILE_ATTR} />
+      <AttributionControl position="bottomleft" prefix="Leaflet" />
       {userPos && <Marker position={userPos} icon={liveDotIcon} />}
       <MapRecenter target={userPos || center} zoom={zoom + 2} />
     </MapContainer>
