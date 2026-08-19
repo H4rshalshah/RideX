@@ -318,6 +318,81 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* ── Contact ─────────────────────────────────────── */}
+      <section id="contact-landing" className="border-y border-ui-line bg-ui-card2/50 py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <span className="text-sm font-bold uppercase tracking-widest text-ui-faint">Get in touch</span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-ui-ink sm:text-4xl">
+              We'd love to hear from you
+            </h2>
+            <p className="mt-4 text-lg text-ui-muted">
+              Have a question, feedback, or want to partner with us? Reach out anytime — we respond within 24 hours.
+            </p>
+          </Reveal>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <Reveal delay={0} className="rounded-2xl border border-ui-line bg-ui-card p-6 shadow-card">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-ui-line bg-ui-card2 text-xl text-ui-ink">
+                <i className="ri-mail-send-line" />
+              </div>
+              <h3 className="mt-4 text-lg font-bold text-ui-ink">Email us</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ui-muted">
+                For general inquiries, support, or partnership opportunities.
+              </p>
+              <a
+                href="mailto:h4rshal.workspace@gmail.com"
+                className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-ui-ink transition hover:opacity-70"
+              >
+                <i className="ri-arrow-right-up-line" /> h4rshal.workspace@gmail.com
+              </a>
+            </Reveal>
+
+            <Reveal delay={90} className="rounded-2xl border border-ui-line bg-ui-card p-6 shadow-card">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-ui-line bg-ui-card2 text-xl text-ui-ink">
+                <i className="ri-customer-service-2-line" />
+              </div>
+              <h3 className="mt-4 text-lg font-bold text-ui-ink">24/7 Support</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ui-muted">
+                Our support team is available around the clock for riders and captains alike.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-ui-ink">
+                <i className="ri-checkbox-circle-line text-green-500" /> Available now
+              </span>
+            </Reveal>
+
+            <Reveal delay={180} className="rounded-2xl border border-ui-line bg-ui-card p-6 shadow-card">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-ui-line bg-ui-card2 text-xl text-ui-ink">
+                <i className="ri-share-line" />
+              </div>
+              <h3 className="mt-4 text-lg font-bold text-ui-ink">Follow us</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ui-muted">
+                Stay updated with the latest features, tips and announcements.
+              </p>
+              <div className="mt-3 flex gap-2">
+                {[
+                  { icon: 'ri-github-fill', href: 'https://github.com/H4rshalshah', label: 'GitHub' },
+                  { icon: 'ri-linkedin-fill', href: 'https://www.linkedin.com/in/h4rshal/', label: 'LinkedIn' },
+                  { icon: 'ri-instagram-line', href: 'https://www.instagram.com/itz_harsh047/', label: 'Instagram' },
+                  { icon: 'ri-twitter-x-fill', href: 'https://twitter.com/h4rshalshah', label: 'Twitter' },
+                ].map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={s.label}
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-ui-line bg-ui-card2 text-ui-muted transition hover:bg-ui-accent hover:text-ui-onaccent"
+                  >
+                    <i className={`${s.icon} text-lg`} />
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

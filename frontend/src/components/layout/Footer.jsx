@@ -14,7 +14,7 @@ const columns = [
     title: 'Company',
     links: [
       { label: 'About RideX', to: '/#about' },
-      { label: 'Contact', to: '/#contact' },
+      { label: 'Contact', to: '/#contact-landing' },
       { label: 'Log in', to: '/login' },
     ],
   },

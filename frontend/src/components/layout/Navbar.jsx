@@ -12,7 +12,7 @@ const links = [
   { label: 'Book a Ride', to: '/home' },
   { label: 'Rides', to: '/history' },
   { label: 'About', to: '/#about' },
-  { label: 'Contact', to: '/#contact' },
+  { label: 'Contact', to: '/#contact-landing' },
 ];
 
 const tabClass = ({ isActive }) =>
