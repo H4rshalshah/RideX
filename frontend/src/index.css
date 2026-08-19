@@ -156,13 +156,14 @@
   background-color: #0b0b0d;
 }
 .map-tiles-dark .leaflet-tile-pane {
-  /* Readable and theme-matched: background sits on the ui-line tone, roads
-     stay subtle and labels land on the ui-muted tone */
-  filter: saturate(0.5) brightness(0.78) contrast(1.05);
+  /* Dark theme: keep roads/labels readable, suppress the large area-block
+     grid pattern that CartoDB dark_all tiles produce at low zoom levels */
+  filter: saturate(0.35) brightness(0.85) contrast(0.9);
 }
 .map-tiles-light .leaflet-tile-pane {
-  /* Light map blends into the off-white canvas with readable labels */
-  filter: saturate(0.4) brightness(1.02) contrast(0.98);
+  /* Light map: tiles blend into the off-white canvas; roads and labels
+     stay clearly visible through the overlays */
+  filter: saturate(0.55) brightness(1.05) contrast(1);
 }
 
 /* Live-location pulsing dot (Leaflet map marker) */

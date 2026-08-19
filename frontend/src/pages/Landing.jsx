@@ -1,4 +1,6 @@
+import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import gsap from 'gsap';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
@@ -65,74 +67,114 @@ const Landing = () => {
   const loggedIn = !!localStorage.getItem('token');
   const bookHref = loggedIn ? '/home' : '/login';
 
+  const heroRef = useRef(null);
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const ctx = gsap.context(() => {
+      /* Subtle map zoom-in so the background feels alive */
+      gsap.fromTo(
+        mapRef.current,
+        { scale: 1.15, opacity: 0.4 },
+        { scale: 1, opacity: 1, duration: 2.2, ease: 'power3.out' },
+      );
+
+      /* Badge */
+      gsap.fromTo(
+        '.hero-badge',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.15, ease: 'power2.out' },
+      );
+
+      /* Title — each line staggers in */
+      gsap.fromTo(
+        '.hero-title-line',
+        { opacity: 0, y: 28, clipPath: 'inset(0 0 100% 0)' },
+        { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 0.7, stagger: 0.15, delay: 0.3, ease: 'power3.out' },
+      );
+
+      /* Subtitle */
+      gsap.fromTo(
+        '.hero-subtitle',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.7, ease: 'power2.out' },
+      );
+
+      /* Buttons */
+      gsap.fromTo(
+        '.hero-buttons',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.6, delay: 0.9, ease: 'power2.out' },
+      );
+
+      /* Trust badges */
+      gsap.fromTo(
+        '.hero-trust',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.5, delay: 1.1, ease: 'power2.out' },
+      );
+    }, heroRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-ui-canvas">
       <Navbar />
 
       {/* ── Hero (real map background) ─────────────────────── */}
-      <section className="relative w-full overflow-hidden border-b border-ui-line">
+      <section ref={heroRef} className="relative w-full overflow-hidden border-b border-ui-line">
         {/* Full-bleed map behind everything */}
-        <div className="absolute inset-0 z-0">
+        <div ref={mapRef} className="absolute inset-0 z-0">
           <HeroMap />
         </div>
 
-        {/* Readability overlays — subtle, map stays clearly visible */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-24 bg-gradient-to-b from-ui-canvas/60 to-transparent" />
-        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-ui-canvas/60 via-ui-canvas/25 to-transparent lg:from-ui-canvas/45 lg:via-ui-canvas/15" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-ui-canvas/70 to-transparent" />
+        {/* Readability overlays — light enough to keep the map vivid */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-24 bg-gradient-to-b from-ui-canvas/40 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-ui-canvas/40 via-ui-canvas/15 to-transparent lg:from-ui-canvas/30 lg:via-ui-canvas/10" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-ui-canvas/50 to-transparent" />
 
         <div className="relative z-10 mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-16 pt-36 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
-            <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-ui-line bg-ui-card/90 px-3.5 py-1.5 text-xs font-semibold text-ui-muted shadow-card backdrop-blur-sm">
-                <i className="ri-flashlight-fill text-ui-ink" />
-                Your ride, in minutes
-              </span>
-            </Reveal>
-            <Reveal delay={80}>
-              <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-ui-ink sm:text-5xl lg:text-6xl">
-                Ride smarter.
-                <br />
-                Arrive faster.
-              </h1>
-            </Reveal>
-            <Reveal delay={160}>
-              <p className="mt-5 max-w-md font-serif text-lg leading-relaxed text-ui-muted">
-                Verified captains nearby. Upfront fares. Live tracking from pickup to drop-off.
-              </p>
-            </Reveal>
-            <Reveal delay={240}>
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Link to={bookHref}>
-                  <Button size="lg" className="w-full sm:w-auto">
-                    <i className="ri-taxi-line" /> Book a Ride
-                  </Button>
-                </Link>
-                <a href="#features">
-                  <Button
-                    size="lg"
-                    variant="ghost"
-                    className="w-full border border-ui-line bg-ui-card/90 backdrop-blur-sm hover:bg-ui-card sm:w-auto"
-                  >
-                    Explore Features <i className="ri-arrow-down-line" />
-                  </Button>
-                </a>
-              </div>
-            </Reveal>
-            <Reveal delay={320}>
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-medium text-ui-muted">
-                {[
-                  { icon: 'ri-shield-check-line', label: 'Verified captains' },
-                  { icon: 'ri-radar-line', label: 'Live tracking' },
-                  { icon: 'ri-bank-card-line', label: 'Cash on arrival' },
-                ].map((item) => (
-                  <span key={item.label} className="inline-flex items-center gap-2">
-                    <i className={`${item.icon} text-ui-faint`} />
-                    {item.label}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
+            <div className="hero-badge inline-flex items-center gap-2 rounded-full border border-ui-line bg-ui-card/90 px-3.5 py-1.5 text-xs font-semibold text-ui-muted shadow-card backdrop-blur-sm" style={{ opacity: 0 }}>
+              <i className="ri-flashlight-fill text-ui-ink" />
+              Your ride, in minutes
+            </div>
+            <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-ui-ink sm:text-5xl lg:text-6xl">
+              <span className="hero-title-line block" style={{ opacity: 0 }}>Ride smarter.</span>
+              <span className="hero-title-line block" style={{ opacity: 0 }}>Arrive faster.</span>
+            </h1>
+            <p className="hero-subtitle mt-5 max-w-md font-serif text-lg leading-relaxed text-ui-muted" style={{ opacity: 0 }}>
+              Verified captains nearby. Upfront fares. Live tracking from pickup to drop-off.
+            </p>
+            <div className="hero-buttons mt-8 flex flex-wrap items-center gap-4" style={{ opacity: 0 }}>
+              <Link to={bookHref}>
+                <Button size="lg" className="w-full sm:w-auto">
+                  <i className="ri-taxi-line" /> Book a Ride
+                </Button>
+              </Link>
+              <a href="#features">
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="w-full border border-ui-line bg-ui-card/90 backdrop-blur-sm hover:bg-ui-card sm:w-auto"
+                >
+                  Explore Features <i className="ri-arrow-down-line" />
+                </Button>
+              </a>
+            </div>
+            <div className="hero-trust mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-medium text-ui-muted" style={{ opacity: 0 }}>
+              {[
+                { icon: 'ri-shield-check-line', label: 'Verified captains' },
+                { icon: 'ri-radar-line', label: 'Live tracking' },
+                { icon: 'ri-bank-card-line', label: 'Cash on arrival' },
+              ].map((item) => (
+                <span key={item.label} className="inline-flex items-center gap-2">
+                  <i className={`${item.icon} text-ui-faint`} />
+                  {item.label}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
