@@ -149,21 +149,43 @@
   }
 }
 
-/* Soften map tiles so they blend with the UI — the street grid fades into
-   the background and the map reads as a subtle texture. The filter is applied
-   on the whole tile pane (not each tile) so no grid seams show between tiles. */
+/* ── Map tile blending ────────────────────────────────────────
+   Match the Leaflet container background to the tile colour so that
+   tile-boundary seams never flash a mismatched colour during load or
+   zoom. The filter on .leaflet-tile-pane tones the tiles to match the
+   UI while keeping state/country boundaries and road lines readable. */
+
+/* Dark: CARTO dark_all tiles sit on #1a1a2e; match container + tiles */
 .map-tiles-dark {
-  background-color: #0b0b0d;
+  background-color: #1a1a2e;
+}
+.map-tiles-dark .leaflet-container {
+  background-color: #1a1a2e;
 }
 .map-tiles-dark .leaflet-tile-pane {
-  /* Dark theme: keep roads/labels readable, suppress the large area-block
-     grid pattern that CartoDB dark_all tiles produce at low zoom levels */
-  filter: saturate(0.35) brightness(0.85) contrast(0.9);
+  /* Slightly desaturated, roads and borders stay visible; contrast
+     kept moderate so tile seams don't reappear as grid lines */
+  filter: saturate(0.45) brightness(0.95) contrast(1.05);
+}
+
+/* Light: CARTO light_all tiles sit on #f2efe9; match container */
+.map-tiles-light {
+  background-color: #f2efe9;
+}
+.map-tiles-light .leaflet-container {
+  background-color: #f2efe9;
 }
 .map-tiles-light .leaflet-tile-pane {
-  /* Light map: tiles blend into the off-white canvas; roads and labels
-     stay clearly visible through the overlays */
-  filter: saturate(0.55) brightness(1.05) contrast(1);
+  /* Tiles blend with the off-white canvas; boundaries and roads
+     stay sharp through the filter */
+  filter: saturate(0.6) brightness(1.02) contrast(1.05);
+}
+
+/* Prevent tile-boundary flash during zoom/load — force GPU compositing
+   on the tile pane so the filter applies uniformly */
+.ridex-map .leaflet-tile-pane {
+  will-change: filter;
+  backface-visibility: hidden;
 }
 
 /* Live-location pulsing dot (Leaflet map marker) */
