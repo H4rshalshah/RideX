@@ -123,7 +123,7 @@ const Landing = () => {
       <Navbar />
 
       {/* ── Hero (real map background) ─────────────────────── */}
-      <section ref={heroRef} className="relative w-full overflow-hidden border-b border-ui-line">
+      <section ref={heroRef} className="relative w-full min-h-screen overflow-hidden border-b border-ui-line">
         {/* Full-bleed map behind everything */}
         <div ref={mapRef} className="absolute inset-0 z-0">
           <HeroMap />
@@ -134,7 +134,7 @@ const Landing = () => {
         <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-ui-canvas/40 via-ui-canvas/15 to-transparent lg:from-ui-canvas/30 lg:via-ui-canvas/10" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-ui-canvas/50 to-transparent" />
 
-        <div className="relative z-10 mx-auto min-h-[calc(100vh-4rem)] max-w-7xl px-4 pb-16 pt-36 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-4 pb-16 pt-20 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <div className="hero-badge inline-flex items-center gap-2 rounded-full border border-ui-line bg-ui-card/90 px-3.5 py-1.5 text-xs font-semibold text-ui-muted shadow-card backdrop-blur-sm" style={{ opacity: 0 }}>
               <i className="ri-flashlight-fill text-ui-ink" />
