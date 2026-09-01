@@ -155,7 +155,8 @@
    zoom. The filter on .leaflet-tile-pane tones the tiles to match the
    UI while keeping state/country boundaries and road lines readable. */
 
-/* Dark: CARTO dark_all tiles sit on #1a1a2e; match container + tiles */
+/* Dark: invert standard OSM tiles to create a dark base, then
+   desaturate and tint to match the #1a1a2e UI background */
 .map-tiles-dark {
   background-color: #1a1a2e;
 }
@@ -163,12 +164,10 @@
   background-color: #1a1a2e;
 }
 .map-tiles-dark .leaflet-tile-pane {
-  /* Slightly desaturated, roads and borders stay visible; contrast
-     kept moderate so tile seams don't reappear as grid lines */
-  filter: saturate(0.45) brightness(0.95) contrast(1.05);
+  filter: invert(1) hue-rotate(180deg) saturate(0.35) brightness(0.65) contrast(1.1);
 }
 
-/* Light: CARTO light_all tiles sit on #f2efe9; match container */
+/* Light: standard OSM tiles sit on #f2efe9; match container */
 .map-tiles-light {
   background-color: #f2efe9;
 }
