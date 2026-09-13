@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, AttributionControl } from 'react-leafl
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useTheme } from '../../context/ThemeContext';
+import { cartoTileUrl, TILE_ATTR } from '../../lib/mapTiles';
 import MapControls from './MapControls';
 
 // India-centred default so the landing hero frames the whole subcontinent
@@ -16,14 +17,6 @@ const liveDotIcon = L.divIcon({
   iconSize: [18, 18],
   iconAnchor: [9, 9],
 });
-
-const tileUrl = (dark) =>
-  dark
-    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-    : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-
-const TILE_ATTR =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 /**
  * Real map that fills the hero background. Tiles are muted to blend with the
@@ -54,7 +47,7 @@ const HeroMap = ({ center = DEFAULT_CENTER, zoom = DEFAULT_ZOOM, showControls = 
       zoomControl={false}
       attributionControl={false}
     >
-      <TileLayer url={tileUrl(dark)} attribution={TILE_ATTR} />
+      <TileLayer url={cartoTileUrl(dark)} attribution={TILE_ATTR} />
       <AttributionControl position="bottomleft" prefix="Leaflet" />
       {userPos && <Marker position={userPos} icon={liveDotIcon} />}
       {showControls && <MapControls target={userPos || center} zoom={zoom + 2} />}

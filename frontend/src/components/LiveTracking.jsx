@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Polyline, useMap, AttributionControl }
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import api from '../lib/api';
+import { cartoTileUrl, TILE_ATTR } from '../lib/mapTiles';
 import Spinner from './ui/Spinner';
 import MapControls from './map/MapControls';
 import DriverCar from './map/DriverCar';
@@ -175,12 +176,8 @@ const LiveTracking = ({
         zoomControl={false}
       >
         <TileLayer
-          url={
-            dark
-              ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-              : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
-          }
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url={cartoTileUrl(dark)}
+          attribution={TILE_ATTR}
         />
 
         <FitBounds
