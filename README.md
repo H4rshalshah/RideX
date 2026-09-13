@@ -66,7 +66,7 @@ OTP-verified starts.
         ├── pages/           # Landing, auth, booking, history, profile, captain pages
         ├── components/      # Layout, brand, UI primitives and ride-flow panels
         ├── context/         # User / Captain / Socket contexts
-        ├── lib/api.js       # Shared axios instance (auth + error handling)
+        ├── lib/             # Shared axios instance (api.js) + CARTO tile URLs (mapTiles.js)
         └── hooks/           # (scroll-reveal lives in components/ui/Reveal)
 ```
 
@@ -103,13 +103,17 @@ CORS_ORIGIN=http://localhost:5173
 
 ```env
 VITE_BASE_URL=http://localhost:3000
+# VITE_CARTO_KEY=your_carto_basemap_api_key           # optional, see note below
 # VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key   # optional
 ```
 
-> **No API keys are required.** The map renders with free OpenStreetMap/CARTO tiles, and the
-> backend falls back to keyless providers (Nominatim geocoding, OSRM routing, Photon
-> autocomplete) for fares, routes and address search. If you add a `GOOGLE_MAPS_API` key to
-> `Backend/.env`, the backend uses Google Maps for those calls automatically instead.
+> **No API keys are required to run the app.** Map tiles come from CARTO, and a default
+> basemap key is built into `frontend/src/lib/mapTiles.js` so tiles render without CARTO's
+> "API key required" watermark. Override it with `VITE_CARTO_KEY` in `frontend/.env` if you
+> would rather use a key restricted to your own domain(s). The backend falls back to keyless
+> providers (Nominatim geocoding, OSRM routing, Photon autocomplete) for fares, routes and
+> address search. If you add a `GOOGLE_MAPS_API` key to `Backend/.env`, the backend uses
+> Google Maps for those calls automatically instead.
 
 ## Running Locally
 
