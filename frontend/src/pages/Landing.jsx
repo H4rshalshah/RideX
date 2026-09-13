@@ -324,7 +324,7 @@ const Landing = () => {
           <Reveal className="mx-auto max-w-2xl text-center">
             <span className="text-sm font-bold uppercase tracking-widest text-ui-faint">Get in touch</span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-ui-ink sm:text-4xl">
-              We'd love to hear from you
+              We&apos;d love to hear from you
             </h2>
             <p className="mt-4 text-lg text-ui-muted">
               Have a question, feedback, or want to partner with us? Reach out anytime — we respond within 24 hours.
